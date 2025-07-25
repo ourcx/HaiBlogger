@@ -1,1 +1,23 @@
-@import "./index.scss"
+@use "./index.scss";
+@use "./back.scss";
+
+
+* , #app{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.xh{
+    width: 100vw;
+    height: 100vh;
+    border: 10px solid #b51e1e;
+    display: flex;
+    position: relative;
+}
+
+.n-config-provider{
+    display: flex;
+    z-index: 100;
+}
+
