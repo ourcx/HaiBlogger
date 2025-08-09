@@ -8,9 +8,30 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/markdown',
+    path: '/markdown/:id', // 添加动态参数
     name: 'markdown',
-    component: Markdown
+    component: () => import('@/page/Md/markdown/markdown.vue')
+  },
+  {
+    path: '/projects',
+    name: 'projects',
+    component: () => import('@/page/projects/index/index.vue')
+  },
+  {
+    path: '/links',
+    name: 'links',
+    component: () => import('@/page/Links/index/index.vue')
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('@/page/About/index.vue')
+  },
+  // 确保所有菜单项都有对应的路由
+  {
+    path: '/:pathMatch(.*)*', // 添加404路由
+    name: 'not-found',
+    component: () => import('@/page/NotFound/index.vue')
   }
 ]
 

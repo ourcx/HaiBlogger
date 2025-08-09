@@ -30,7 +30,7 @@ import { ref, onMounted, computed } from "vue";
 import { NScrollbar, NButton } from "naive-ui";
 
 const theme = ref<"github-dark-dimmed" | "dark">("github-dark-dimmed");
-const mdHeight = ref("auto"); // Changed to auto for better flexbox handling
+const mdHeight = ref("auto"); 
 const mdWidth = ref("100%");
 
 const currentDate = ref(
@@ -41,9 +41,8 @@ const currentDate = ref(
   })
 );
 
-// title he wants to get the name of the blog file
 const title = computed(() => {
-  const fileName = "../../../../blog/第三章.md";
+  const fileName = "../../../blog/第三章.md";
   return fileName.split("/").pop()?.replace(".md", "") || "Markdown Document";
 });
 </script>
@@ -71,7 +70,7 @@ const title = computed(() => {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  overflow: hidden; // Prevents content from spilling out
+  overflow: hidden; 
 }
 
 .xh-markdown-header {
@@ -98,10 +97,9 @@ const title = computed(() => {
   color: var(--text-soft);
 }
 
-// Ensure the scrollbar takes up remaining space
 .n-scrollbar {
   flex-grow: 1;
-  min-height: 0; // Crucial for flexbox scrolling
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
@@ -119,9 +117,8 @@ const title = computed(() => {
   flex-shrink: 0;
 }
 
-// Deep selector for markdown content styling
 :deep(.markdown-body) {
-  padding-right: 1rem; // Add padding to avoid scrollbar overlap
+  padding-right: 1rem; 
   color: var(--text-primary);
   h1,
   h2,
@@ -131,7 +128,6 @@ const title = computed(() => {
   }
 }
 
-/* --- Responsive Design --- */
 @media (max-width: 768px) {
   .xh-markdown-container {
     padding: 1rem;

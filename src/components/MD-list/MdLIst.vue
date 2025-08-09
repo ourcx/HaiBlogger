@@ -1,9 +1,9 @@
 <template>
   <div class="blog-post-item">
-    <h2 class="post-title">
-      <a href="#" class="title-link">{{ post.title }}</a>
-    </h2>
-    <p class="post-excerpt" v-html="post.excerpt"></p>
+    <div class="post-content">
+      <!-- 添加包裹容器 -->
+      <div class="markdown-body" v-html="post.excerpt"></div>
+    </div>
     <div class="post-meta">
       <span v-if="post.date">{{ post.date }}</span>
 
@@ -32,8 +32,8 @@ import { BlogPost } from "./type";
 // 组件的 Props 接口
 interface Props {
   post: BlogPost;
-  category?: string; // 分类是可选的独立 prop
-  tags?: string[]; // 标签是可选的独立 prop
+  category?: string; // 分类是可选的独立 prop,是时间
+  tags?: string[]; // 标签是可选的独立 prop，是标签
 }
 
 // --- 组件 Props ---
@@ -47,14 +47,15 @@ const props = withDefaults(defineProps<Props>(), {
 <style scoped lang="scss">
 @use "../../style/index.scss" as *;
 
-// --- 整体卡片化设计 ---
+
 .blog-post-item {
   border-radius: 12px; // 圆角设计，更显柔和与现代
   transition: all 0.3s ease-in-out; // 平滑过渡所有效果
   background-color: #fff; // 默认白色背景
   width: 100%;
-  height: 50%;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .blog-post-item:hover {
@@ -62,34 +63,6 @@ const props = withDefaults(defineProps<Props>(), {
   //she
 }
 
-
-// --- 标题与交互下划线 ---
-.post-title {
-  margin: 0 0 1rem 0;
-  font-size: 1.75rem; // 稍微增大标题字号，增强视觉层级
-  font-weight: 700;
-  color: #1f2937; // 使用更深邃的炭灰色
-  line-height: 1.3;
-}
-
-.title-link {
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s ease;
-  // 添加渐变色下划线的效果
-  background-image: linear-gradient(to right, #4f46e5, #4f46e5);
-  background-repeat: no-repeat;
-  background-size: 0% 2px;
-  background-position: 0 100%;
-}
-
-.title-link:hover {
-  color: #4f46e5; // 悬停时变为主题色
-  background-size: 100% 2px; // 悬浮时下划线展开
-}
-
-
-// --- 摘要与元数据区域 ---
 .post-excerpt {
   margin: 0 0 1.5rem 0;
   color: #4b5563; // 适度加深，提高可读性
@@ -105,49 +78,60 @@ const props = withDefaults(defineProps<Props>(), {
 
 .post-meta {
   font-size: 0.9rem;
-  color: #6b7280; // 元信息使用中性灰色，避免喧宾夺主
+  color: #6b7280;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5em; // 使用 gap 属性优雅地控制各部分间距
+  gap: 0.4em;
 }
 
 .separator {
   margin: 0 0.4em;
-  color: #d1d5db; // 分隔符颜色更浅
+  color: #d1d5db; 
   font-weight: 300;
 }
 
-
-// --- 标签胶囊化设计 ---
 .meta-tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.6em; // 使用 gap 控制标签之间的间距
+  gap: 0.6em; 
 }
 
-.tag-link {
-  display: inline-block;
-  padding: 4px 14px;
-  border-radius: 9999px; // 超大圆角形成胶囊形状
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-decoration: none;
-  background-color: rgba(#4f46e5, 0.08); // 使用主题色的淡色填充
-  color: #4338ca; // 使用更深一点的主题色作为文字颜色
-  transition: all 0.2s ease;
-}
-
-.tag-link:hover {
-  background-color: rgba(#4f46e5, 0.15); // 悬浮时加深背景
-  color: #3730a3;
-  transform: scale(1.05); // 轻微放大
-  text-decoration: none; // 确保悬浮时不会出现默认下划线
-}
-
-// 隐藏模板中原有的标签文本分隔符，因为已改用 gap
 .tag-separator {
   display: none;
 }
+
+.markdown-body {
+  padding: 0;
+}
+
+.markdown-body ::v-deep h1 {
+  font-size: 1rem !important; 
+  font-weight: 600;
+  margin: 1.5rem 0 1rem;
+  line-height: 1.3;
+}
+
+.markdown-body ::v-deep h2 {
+  font-size: 1.6rem;
+  margin: 1.3rem 0 0.8rem;
+}
+
+.markdown-body ::v-deep h1 {
+  transition: font-size 0.3s ease;
+}
+.markdown-body :deep(p) {
+  margin: 0.8rem 0;
+  line-height: 1.6;
+}
+
+.markdown-body :deep(ul),
+.markdown-body :deep(ol) {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
 </style>

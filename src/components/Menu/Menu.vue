@@ -14,7 +14,7 @@
         :collapsed="collapsed"
         :collapsed-width="64"
         :collapsed-icon-size="22"
-        :options="menuOptions"
+        :options="processedMenuOptions"
         key-field="whateverKey"
         label-field="whateverLabel"
         children-field="whateverChildren"
@@ -25,17 +25,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h } from "vue";
+import { ref, h, computed } from "vue";
 import { NLayout, NLayoutSider, NMenu, NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import type { Component } from "vue";
+import { RouterLink, useRouter } from "vue-router";
 import {
   BookOutline as BookIcon,
   PersonOutline as PersonIcon,
   WineOutline as WineIcon,
+  HomeOutline as HomeIcon,
+  BriefcaseOutline as ProjectIcon,
+  LinkOutline as LinkIcon,
+  InformationCircleOutline as AboutIcon
 } from "@vicons/ionicons5";
-
-// 响应式状态
+import {type RouteParamsRaw } from "vue-router";
+import type { VNodeChild } from "vue";
+const router = useRouter();
 const collapsed = ref(true);
 
 // 图标渲染函数
@@ -43,81 +49,117 @@ const renderIcon = (icon: Component) => {
   return () => h(NIcon, null, { default: () => h(icon) });
 };
 
-// 菜单配置
+// 原始菜单配置
 const menuOptions: MenuOption[] = [
   {
-    whateverLabel: "且听风吟",
-    whateverKey: "hear-the-wind-sing",
-    icon: renderIcon(BookIcon),
+    whateverLabel: "首页",
+    whateverKey: "home",
+    icon: renderIcon(HomeIcon),
+    route: "home"
   },
   {
-    whateverLabel: "1973年的弹珠玩具",
-    whateverKey: "pinball-1973",
+    whateverLabel: "项目",
+    whateverKey: "projects",
+    icon: renderIcon(ProjectIcon),
+    route: "projects"
+  },
+  {
+    whateverLabel: "友链",
+    whateverKey: "links",
+    icon: renderIcon(LinkIcon),
+    route: "links"
+  },
+  {
+    whateverLabel: "关于",
+    whateverKey: "about",
+    icon: renderIcon(AboutIcon),
+    route: "about"
+  },
+  {
+    whateverLabel: "文章",
+    whateverKey: "articles",
     icon: renderIcon(BookIcon),
-    disabled: true,
     whateverChildren: [
       {
-        whateverLabel: "鼠",
-        whateverKey: "rat",
-      },
-    ],
-  },
-  {
-    whateverLabel: "寻羊冒险记",
-    whateverKey: "a-wild-sheep-chase",
-    disabled: true,
-    icon: renderIcon(BookIcon),
-  },
-  {
-    whateverLabel: "舞，舞，舞",
-    whateverKey: "dance-dance-dance",
-    icon: renderIcon(BookIcon),
-    whateverChildren: [
-      {
-        type: "group",
-        whateverLabel: "人物",
-        whateverKey: "people",
-        whateverChildren: [
-          {
-            whateverLabel: "叙事者",
-            whateverKey: "narrator",
-            icon: renderIcon(PersonIcon),
-          },
-          {
-            whateverLabel: "羊男",
-            whateverKey: "sheep-man",
-            icon: renderIcon(PersonIcon),
-          },
-        ],
+        whateverLabel: "且听风吟",
+        whateverKey: "hear-the-wind-sing",
+        route: "markdown",
+        params: { id: 'hear-the-wind-sing' }
       },
       {
-        whateverLabel: "饮品",
-        whateverKey: "beverage",
-        icon: renderIcon(WineIcon),
-        whateverChildren: [
-          {
-            whateverLabel: "威士忌",
-            whateverKey: "whisky",
-          },
-        ],
+        whateverLabel: "1973年的弹珠玩具",
+        whateverKey: "pinball-1973",
+        route: "markdown",
+        params: { id: 'pinball-1973' }
       },
       {
-        whateverLabel: "食物",
-        whateverKey: "food",
-        whateverChildren: [
-          {
-            whateverLabel: "三明治",
-            whateverKey: "sandwich",
-          },
-        ],
+        whateverLabel: "寻羊冒险记",
+        whateverKey: "a-wild-sheep-chase",
+        route: "markdown",
+        params: { id: 'a-wild-sheep-chase' }
       },
       {
-        whateverLabel: "过去增多，未来减少",
-        whateverKey: "the-past-increases-the-future-recedes",
+        whateverLabel: "舞，舞，舞",
+        whateverKey: "dance-dance-dance",
+        route: "markdown",
+        params: { id: 'dance-dance-dance' }
       },
-    ],
+    ]
   },
 ];
+
+
+
+// 处理菜单选项，添加路由跳转功能
+const processedMenuOptions = computed<MenuOption[]>(() => {
+  const processOptions = (options: MenuOption[]): MenuOption[] => {
+    return options.map(option => {
+      // 创建新选项对象，保留原始属性
+      const newOption: MenuOption = { ...option };
+      
+      // 添加路由跳转功能
+      if (newOption.route) {
+        // 保存原始标签
+        const originalLabel = newOption.whateverLabel;
+        
+        // 创建路由链接组件
+        newOption.whateverLabel = () => h(
+          RouterLink,
+          {
+            to: newOption.params 
+              ? { 
+                  name: newOption.route as string, 
+                  params: newOption.params as RouteParamsRaw 
+                } 
+              : { name: newOption.route as string }
+          },
+          { default: () => originalLabel as string }
+        );
+        
+        // 添加点击事件处理
+        newOption.onClick = () => {
+          if (newOption.params) {
+            router.push({ 
+              name: newOption.route as string, 
+              params: newOption.params as RouteParamsRaw
+            });
+          } else {
+            router.push({ name: newOption.route as string });
+          }
+        };
+      }
+      
+      // 递归处理子菜单
+      if (Array.isArray(newOption.whateverChildren)) {
+        newOption.whateverChildren = processOptions(newOption.whateverChildren);
+      }
+      
+      return newOption;
+    });
+  };
+  
+  return processOptions(menuOptions);
+});
 </script>
 
 <style scoped lang="scss">

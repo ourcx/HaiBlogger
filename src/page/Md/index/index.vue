@@ -1,7 +1,16 @@
 <template>
   <div class="fei-MD__main">
     <n-scrollbar style="height: 100vh">
-      <div class="fei-MD__title">小海的笔记</div>
+      <div class="fei-MD__title">
+        {{ title }}
+      </div>
+      <div class="fei-MD__title--subtitle">
+        <div class="fei-MD__time">{{ time }}</div>
+        <div class="fei-MD__time--separator">|</div>
+        <div class="fei-MD__time--author">小海</div>
+        <div class="fei-MD__time--separator">|</div>
+        <div class="fei-MD__time--tag">生活日常</div>
+      </div>
       <div class="fei-MD__body">
         <div class="fei-MD__list">
           <div class="fei-MD__item" v-for="item in posts" :key="item.id">
@@ -18,8 +27,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import MarkdownIt from "markdown-it";
-import { NPagination,NScrollbar } from "naive-ui";
+import { NPagination, NScrollbar } from "naive-ui";
 import MdList from "@/components/MD-list/MdLIst.vue";
+import type { IndexMDProps } from "./type";
+import { useDynamicStore } from "@/store";
+import { extractFrontmatter } from '@/utils/extractFrontmatter'
+
+const DynamicStore = useDynamicStore();
+const props = withDefaults(defineProps<IndexMDProps>(), {
+  title: "小海的笔记项目",
+  time: new Date().toLocaleDateString(),
+});
 
 // 定义文章类型
 interface BlogPost {
@@ -67,29 +85,12 @@ onMounted(() => {
         htmlContent,
       };
     });
-    console.log(posts.value);
+
   } catch (error) {
     console.error("处理 Markdown 文件时出错:", error);
   }
 });
 
-// 提取 frontmatter 的函数
-function extractFrontmatter(content: string): Record<string, string> {
-  const frontmatter: Record<string, string> = {};
-  const match = content.match(/^---\s*([\s\S]*?)\s*---/);
-
-  if (match && match[1]) {
-    match[1].split("\n").forEach((line) => {
-      const [key, ...valueParts] = line.split(":");
-      if (key && valueParts.length > 0) {
-        const value = valueParts.join(":").trim();
-        frontmatter[key.trim()] = value;
-      }
-    });
-  }
-
-  return frontmatter;
-}
 </script>
 
 <style scoped lang="scss">
@@ -107,15 +108,17 @@ function extractFrontmatter(content: string): Record<string, string> {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
 }
 
 // Page title
 .fei-MD__title {
   flex-shrink: 0; // Prevent the title from shrinking
-  margin-bottom: 2rem;
   font-weight: bold;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 40px;
+  color: #{$primary-color};
 }
 
 // Container for the list of posts. This element will scroll.
@@ -130,7 +133,6 @@ function extractFrontmatter(content: string): Record<string, string> {
   display: flex;
   flex-direction: column;
   // Use 'gap' here to create space BETWEEN items
-  gap: 1.5rem;
 }
 
 // Footer for pagination
@@ -143,9 +145,90 @@ function extractFrontmatter(content: string): Record<string, string> {
   border-top: 1px solid #e5e7eb;
 }
 
-.fei-MD__item{
+.fei-MD__item {
   display: flex;
   flex-direction: column;
-  height: 200px;
+  height: auto;
+}
+
+.fei-MD__title--subtitle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  font-size: 16px;
+  color: #6b7280; // 中性灰色
+  margin-top: 10px;
+  gap: 10px; // 使用 gap 控制间距
+}
+
+@media (max-width: 1200px) {
+  .fei-MD__list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .fei-MD__title {
+    font-size: 2.2rem;
+  }
+
+
+  .fei-MD__list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fei-MD__main {
+    padding-left: 20%;
+    width: 80%;
+  }
+
+  .fei-MD__title {
+    font-size: 1.8rem;
+    padding-bottom: 10px;
+    margin: 1rem 0;
+  }
+
+  .fei-MD__title::after {
+    width: 60px;
+    height: 2px;
+  }
+
+  .fei-MD__list {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .fei-MD__footer {
+    padding: 20px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .fei-MD__main {
+    padding-left: 10%;
+    width: 85%;
+  }
+
+  .fei-MD__title {
+    font-size: 1.6rem;
+  }
+
+  .fei-MD__item {
+    margin: 0 -10px;
+  }
+
+  .fei-MD__footer {
+    overflow-x: auto;
+    padding: 15px 5px;
+  }
+
+  .fei-MD__footer .n-pagination {
+    transform: scale(0.9);
+  }
 }
 </style>

@@ -2,6 +2,10 @@
 import { NConfigProvider } from "naive-ui";
 import { themeOverrides } from "@/style/naive-ui-theme";
 import Menu from "@/components/Menu/Menu.vue";
+import { useDynamicStore } from './store/index';
+
+const dynamicStore = useDynamicStore();
+dynamicStore.initData();
 </script>
 
 <template>
