@@ -33,23 +33,15 @@ export const useDynamicStore = defineStore('Dynamic', {
     initData () {
       const mdParser = new MarkdownIt()
       const posts = ref<DataArray>([])
-      // 1. 安全获取 Markdown 文件
       const mdModules = import.meta.glob('/src/blog/**/*.md', {
         eager: true,
         query: '?raw' // 避免特殊字符问题
       })
       posts.value = Object.entries(mdModules).map(([path, module]: any) => {
-        // 安全提取文件名
         const fileName = decodeURIComponent(path.split('/').pop() || '')
         const id = fileName.replace(/\.md$/, '')
-
-        // 获取原始内容
         const rawContent = cleanMarkdown(module.default)
-
-        // 提取 frontmatter
         const frontmatter = extractFrontmatter(rawContent)
-
-        // 转换 Markdown 为 HTML
         const htmlContent = mdParser.render(
           rawContent.replace(/^---[\s\S]*?---/, '')
         )
@@ -62,7 +54,8 @@ export const useDynamicStore = defineStore('Dynamic', {
           content: htmlContent,
         }
       })
-      this.data = posts.value
+      this.data = posts.value.sort((a, b) => a.title.localeCompare(b.title))
+      console.log(posts.value)
     }
   }
 })

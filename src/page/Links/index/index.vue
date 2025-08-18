@@ -78,7 +78,6 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
   align-items: center; // 水平居中所有子元素
   width: 100%;
   height: 100%;
-  padding-top: 20px; // 在容器顶部增加内边距
   gap: 10px; // 使用 gap 设置子元素之间的间距
   box-sizing: border-box;
 
@@ -101,12 +100,11 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
 .xh-links {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 25px 20px;
   
   &__main {
     background: #fff;
     border-radius: 12px;
-    padding: 40px;
     
     &--title {
       font-weight: 700;

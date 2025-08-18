@@ -62,18 +62,12 @@ onMounted(() => {
 
   try {
     posts.value = Object.entries(mdModules).map(([path, module]: any) => {
-      // 安全提取文件名
       const fileName = decodeURIComponent(path.split("/").pop() || "");
       const id = fileName.replace(/\.md$/, "");
-
-      // 获取原始内容
       const rawContent = module.default;
 
-      // 提取 frontmatter
       const frontmatter = extractFrontmatter(rawContent);
       console.log(frontmatter);
-
-      // 转换 Markdown 为 HTML
       const htmlContent = mdParser.render(rawContent.replace(/^---[\s\S]*?---/, ""));
 
       return {
@@ -85,7 +79,7 @@ onMounted(() => {
         htmlContent,
       };
     });
-
+    
   } catch (error) {
     console.error("处理 Markdown 文件时出错:", error);
   }
@@ -121,7 +115,7 @@ onMounted(() => {
   color: #{$primary-color};
 }
 
-// Container for the list of posts. This element will scroll.
+
 .fei-MD__body {
   flex: 1; // Allows this element to grow and fill available space
   overflow-y: auto; // Crucial for making the list scrollable

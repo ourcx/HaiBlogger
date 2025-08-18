@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h, computed } from "vue";
+import { ref, h, computed,onMounted,reactive } from "vue";
 import { NLayout, NLayoutSider, NMenu, NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import type { Component } from "vue";
@@ -41,16 +41,26 @@ import {
 } from "@vicons/ionicons5";
 import {type RouteParamsRaw } from "vue-router";
 import type { VNodeChild } from "vue";
+import { useDynamicStore } from '../../store/index';
+
+
+type RouteConfig = {
+  whateverLabel: string;
+  whateverKey: string;
+  route: "markdown";
+  params: {
+    id: string; 
+  };
+};
+const articlesChildren = ref<RouteConfig[]>([])
 const router = useRouter();
 const collapsed = ref(true);
-
-// 图标渲染函数
+const DynamicStore = useDynamicStore();
 const renderIcon = (icon: Component) => {
   return () => h(NIcon, null, { default: () => h(icon) });
 };
 
-// 原始菜单配置
-const menuOptions: MenuOption[] = [
+const menuOptions=computed<MenuOption[]>(() => [
   {
     whateverLabel: "首页",
     whateverKey: "home",
@@ -79,36 +89,18 @@ const menuOptions: MenuOption[] = [
     whateverLabel: "文章",
     whateverKey: "articles",
     icon: renderIcon(BookIcon),
-    whateverChildren: [
-      {
-        whateverLabel: "且听风吟",
-        whateverKey: "hear-the-wind-sing",
-        route: "markdown",
-        params: { id: 'hear-the-wind-sing' }
-      },
-      {
-        whateverLabel: "1973年的弹珠玩具",
-        whateverKey: "pinball-1973",
-        route: "markdown",
-        params: { id: 'pinball-1973' }
-      },
-      {
-        whateverLabel: "寻羊冒险记",
-        whateverKey: "a-wild-sheep-chase",
-        route: "markdown",
-        params: { id: 'a-wild-sheep-chase' }
-      },
-      {
-        whateverLabel: "舞，舞，舞",
-        whateverKey: "dance-dance-dance",
-        route: "markdown",
-        params: { id: 'dance-dance-dance' }
-      },
-    ]
+    whateverChildren: articlesChildren.value
   },
-];
+]);
 
-
+onMounted(() => {
+  articlesChildren.value = DynamicStore.data.map(item => ({
+    whateverLabel: item.title,
+    whateverKey: item.id!,
+    route: "markdown",
+    params: { id: item.id! }
+  }))
+})
 
 // 处理菜单选项，添加路由跳转功能
 const processedMenuOptions = computed<MenuOption[]>(() => {
@@ -158,7 +150,7 @@ const processedMenuOptions = computed<MenuOption[]>(() => {
     });
   };
   
-  return processOptions(menuOptions);
+  return processOptions(menuOptions.value);
 });
 </script>
 

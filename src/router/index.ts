@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '@/page/Home/Home.vue'
-import Markdown from '@/page/Md/index/index.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/markdown',
+    name: 'markdownIndex',
+    component:()=>import('@/page/Md/index/index.vue')
   },
   {
     path: '/markdown/:id', // 添加动态参数
