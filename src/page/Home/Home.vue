@@ -100,7 +100,7 @@ const SocialLeave = () => {
               <div class="xh-social">
                 <!-- 普通卡片 -->
                 <div class="card" v-for="item in SocialData">
-                  <Card :title="item.title" :content="item.content" />
+                  <Card :title="item.title" :content="item.excerpt" />
                 </div>
                 <!-- <div class="card double-row">
                   <Card />

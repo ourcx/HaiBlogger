@@ -51,7 +51,7 @@ export const useDynamicStore = defineStore('Dynamic', {
           title: frontmatter.title || id,
           date: frontmatter.date || '未知日期',
           excerpt: frontmatter.excerpt || htmlContent.substring(0, 100) + '...',
-          content: htmlContent,
+          content: module.default,
         }
       })
       this.data = posts.value.sort((a, b) => a.title.localeCompare(b.title))

@@ -27,7 +27,7 @@ export function cleanMarkdown(rawContent: string, maxLength: number = 100): stri
   //   .replace(/\s+/g, ' ')
   //   .trim();
   let cleaned = rawContent.replace(/<img\s+[^>]*src\s*=\s*["']([^"']*)["'][^>]*>/gi, '').replace(/!\[(.*?)\]\(.*?\)/g, '')
-
+  if(maxLength === -1)return cleaned
   // 截断到最大长度
   if (cleaned.length > maxLength) {
     // 找到最近的空格处截断
