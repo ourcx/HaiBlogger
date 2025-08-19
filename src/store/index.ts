@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { extractFrontmatter } from '@/utils/extractFrontmatter'
 import MarkdownIt from 'markdown-it'
 import { cleanMarkdown } from '@/utils/cleanMarkdown'
+import { extractGlobstarMatch } from '@/utils/glob'
 type DataItem = {
   id?: string
   title: string
@@ -37,21 +38,24 @@ export const useDynamicStore = defineStore('Dynamic', {
         eager: true,
         query: '?raw' // 避免特殊字符问题
       })
+      console.log(mdModules)
       posts.value = Object.entries(mdModules).map(([path, module]: any) => {
-        const fileName = decodeURIComponent(path.split('/').pop() || '')
-        const id = fileName.replace(/\.md$/, '')
+        let fileName = decodeURIComponent(path.split('/').pop() || '')
         const rawContent = cleanMarkdown(module.default)
         const frontmatter = extractFrontmatter(rawContent)
         const htmlContent = mdParser.render(
           rawContent.replace(/^---[\s\S]*?---/, '')
         )
-
+        const MdStr = extractGlobstarMatch('/src/blog/**/*.md',path)
+        if (MdStr) {
+          fileName = MdStr + fileName
+        }
         return {
-          id,
-          title: frontmatter.title || id,
+          id: fileName,
+          title: fileName,
           date: frontmatter.date || '未知日期',
           excerpt: frontmatter.excerpt || htmlContent.substring(0, 100) + '...',
-          content: module.default,
+          content: module.default
         }
       })
       this.data = posts.value.sort((a, b) => a.title.localeCompare(b.title))

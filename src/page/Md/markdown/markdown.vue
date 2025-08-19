@@ -44,10 +44,15 @@ const currentDate = ref(
     day: "numeric",
   })
 );
-const list = DynamicStore.data.map(item => item.title);
+const list = DynamicStore.data.map(item => {
+  if(item.title.includes("/")){
+    return item.title.replace("/", "%2F")
+  }
+  return item.title
+});
 const listIndex = computed(() => {
   const fileName = Id.value as string;
-  return list.indexOf(fileName)
+  return list.indexOf(fileName.replace("/", "%2F"))
 })
 const title = computed(() => {
   const fileName = Id.value as string;

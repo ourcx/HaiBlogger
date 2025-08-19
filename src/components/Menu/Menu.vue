@@ -49,8 +49,9 @@ type RouteConfig = {
   whateverKey: string;
   route: "markdown";
   params: {
-    id: string; 
+    id: string;
   };
+  whateverChildren?: RouteConfig[];
 };
 const articlesChildren = ref<RouteConfig[]>([])
 const router = useRouter();
@@ -94,12 +95,33 @@ const menuOptions=computed<MenuOption[]>(() => [
 ]);
 
 onMounted(() => {
-  articlesChildren.value = DynamicStore.data.map(item => ({
+  articlesChildren.value = DynamicStore.data.map(item => {
+    if(item.id?.includes("/")){
+      const prev = item.id.split("/")[0];
+      const next = item.id.split("/")[1];
+      return {
+        whateverLabel: prev,
+        whateverKey: item.id,
+        route: "markdown",
+        params: { id: prev! },
+        whateverChildren: [
+          {
+            whateverLabel: next,
+            whateverKey: item.id,
+            route: "markdown",
+            params: { id: item.id! },
+          }
+        ]
+      }
+    }
+    return {
     whateverLabel: item.title,
     whateverKey: item.id!,
     route: "markdown",
     params: { id: item.id! }
-  }))
+  }
+  })
+  console.log(articlesChildren.value)
 })
 
 // 处理菜单选项，添加路由跳转功能
@@ -108,31 +130,31 @@ const processedMenuOptions = computed<MenuOption[]>(() => {
     return options.map(option => {
       // 创建新选项对象，保留原始属性
       const newOption: MenuOption = { ...option };
-      
+
       // 添加路由跳转功能
       if (newOption.route) {
         // 保存原始标签
         const originalLabel = newOption.whateverLabel;
-        
+
         // 创建路由链接组件
         newOption.whateverLabel = () => h(
           RouterLink,
           {
-            to: newOption.params 
-              ? { 
-                  name: newOption.route as string, 
-                  params: newOption.params as RouteParamsRaw 
-                } 
+            to: newOption.params
+              ? {
+                  name: newOption.route as string,
+                  params: newOption.params as RouteParamsRaw
+                }
               : { name: newOption.route as string }
           },
           { default: () => originalLabel as string }
         );
-        
+
         // 添加点击事件处理
         newOption.onClick = () => {
           if (newOption.params) {
-            router.push({ 
-              name: newOption.route as string, 
+            router.push({
+              name: newOption.route as string,
               params: newOption.params as RouteParamsRaw
             });
           } else {
@@ -140,16 +162,16 @@ const processedMenuOptions = computed<MenuOption[]>(() => {
           }
         };
       }
-      
+
       // 递归处理子菜单
       if (Array.isArray(newOption.whateverChildren)) {
         newOption.whateverChildren = processOptions(newOption.whateverChildren);
       }
-      
+
       return newOption;
     });
   };
-  
+
   return processOptions(menuOptions.value);
 });
 </script>
