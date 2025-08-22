@@ -95,34 +95,55 @@ const menuOptions=computed<MenuOption[]>(() => [
 ]);
 
 onMounted(() => {
+  const articles: any[] = [];
+
   articlesChildren.value = DynamicStore.data.map(item => {
-    if(item.id?.includes("/")){
-      const prev = item.id.split("/")[0];
-      const next = item.id.split("/")[1];
-      return {
-        whateverLabel: prev,
-        whateverKey: item.id,
-        route: "markdown",
-        params: { id: prev! },
-        whateverChildren: [
-          {
+    if (item.id?.includes("/")) {
+      const [prev, next] = item.id.split("/");
+      let found = false;
+
+      for (let i = 0; i < articles.length; i++) {
+        if (articles[i].whateverLabel === prev) {
+          articles[i].whateverChildren?.push({
             whateverLabel: next,
             whateverKey: item.id,
             route: "markdown",
-            params: { id: item.id! },
-          }
-        ]
+            params: { id: item.id }
+          });
+          found = true;
+          break;
+        }
       }
+
+      if (!found) {
+        articles.push({
+          whateverLabel: prev,
+          whateverKey: prev,
+          route: "markdown",
+          params: { id: prev },
+          whateverChildren: [{
+            whateverLabel: next,
+            whateverKey: item.id,
+            route: "markdown",
+            params: { id: item.id }
+          }]
+        });
+      }
+
+      return null; // 有斜杠的文章不直接显示在主列表
     }
+
     return {
-    whateverLabel: item.title,
-    whateverKey: item.id!,
-    route: "markdown",
-    params: { id: item.id! }
-  }
-  })
-  console.log(articlesChildren.value)
-})
+      whateverLabel: item.title,
+      whateverKey: item.id,
+      route: "markdown",
+      params: { id: item.id }
+    };
+  }).filter(Boolean) as RouteConfig[]; // 过滤掉null值并断言类型
+
+  articlesChildren.value.push(...articles);
+  console.log(articlesChildren.value);
+});
 
 // 处理菜单选项，添加路由跳转功能
 const processedMenuOptions = computed<MenuOption[]>(() => {
@@ -134,7 +155,8 @@ const processedMenuOptions = computed<MenuOption[]>(() => {
       // 添加路由跳转功能
       if (newOption.route) {
         // 保存原始标签
-        const originalLabel = newOption.whateverLabel;
+        if(!newOption.whateverChildren){
+const originalLabel = newOption.whateverLabel;
 
         // 创建路由链接组件
         newOption.whateverLabel = () => h(
@@ -162,7 +184,7 @@ const processedMenuOptions = computed<MenuOption[]>(() => {
           }
         };
       }
-
+        }
       // 递归处理子菜单
       if (Array.isArray(newOption.whateverChildren)) {
         newOption.whateverChildren = processOptions(newOption.whateverChildren);
