@@ -1,13 +1,14 @@
 export interface BlogPost {
-  id: string;
-  title: string;
-  date: string;
-  excerpt: string;
-  content: string;
-  htmlContent?: string;
+  id?: string
+  title: string
+  date?: string
+  excerpt?: string
+  content: string
+  htmlContent?: string
+  links?: string
 }
 
 export interface MdListType {
-  post: BlogPost;
-    loading: boolean;
+  post: BlogPost
+  loading: boolean
 }

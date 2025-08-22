@@ -40,6 +40,7 @@ const props = withDefaults(defineProps<LinksProps>(), {
   padding: 16px;
   text-decoration: none; /* 移除默认的下划线 */
   background-color: var(--fei-bg-color-overlay); /* 卡片背景色 */
+  transition: all 0.4s ease-in-out;
 }
 
 .fei-link:hover {

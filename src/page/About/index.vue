@@ -49,20 +49,6 @@
           </n-blockquote>
         </n-card>
 
-        <n-card title="我的爱好" hoverable>
-          <div class="hobbies-tags">
-            <n-tag
-              v-for="hobby in hobbies"
-              :key="hobby.label"
-              :type="hobby.type"
-              size="large"
-              round
-            >
-              {{ hobby.label }}
-            </n-tag>
-          </div>
-        </n-card>
-
         <n-card title="在这里找到我" hoverable>
           <div class="social-links">
             <n-button
@@ -101,13 +87,6 @@ import {
 import type { Component } from "vue";
 import { LogoGithub, LogoEdge, MailOutline } from "@vicons/ionicons5";
 
-const hobbies = [
-  { label: "编码", type: "primary" as const },
-  { label: "音乐", type: "success" as const },
-  { label: "阅读", type: "warning" as const },
-  { label: "游戏", type: "error" as const },
-  { label: "设计", type: "info" as const },
-];
 
 const socialLinks: {
   name: string;
@@ -117,19 +96,19 @@ const socialLinks: {
 }[] = [
   {
     name: "GitHub",
-    url: "https://github.com/your-username",
+    url: "https://github.com/ourcx",
     icon: LogoGithub,
     type: "primary",
   },
   {
     name: "Bilibili",
-    url: "https://space.bilibili.com/your-uid",
+    url: "https://space.bilibili.com/515482775",
     icon: LogoEdge,
     type: "success",
   },
   {
     name: "Email",
-    url: "mailto:your-email@example.com",
+    url: "mailto:3277975910@qq.com",
     icon: MailOutline,
     type: "info",
   },
@@ -191,7 +170,6 @@ const socialLinks: {
   flex: 1;
 }
 
-.hobbies-tags,
 .social-links {
   display: flex;
   flex-wrap: wrap;

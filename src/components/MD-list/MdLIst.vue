@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-post-item">
+  <div class="blog-post-item" @click="clickRouter">
     <div class="post-content">
       <div class="markdown-body" v-html="post.excerpt"></div>
     </div>
@@ -26,7 +26,8 @@
 
 <script setup lang="ts">
 import { BlogPost } from "./type";
-
+import { useRouter } from "vue-router";
+const router = useRouter();
 interface Props {
   post: BlogPost;
   category?: string;
@@ -37,6 +38,14 @@ const props = withDefaults(defineProps<Props>(), {
   category: "",
   tags: () => [],
 });
+
+const clickRouter = () => {
+  let title = props.post.title
+  router.push({
+    name: "markdown",
+    params: { id: title },
+  })
+}
 </script>
 
 <style scoped lang="scss">

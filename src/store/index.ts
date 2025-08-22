@@ -17,7 +17,7 @@ type DataItem = {
 type DataArray = DataItem[]
 // 示例 store
 export const useDynamicStore = defineStore('Dynamic', {
-  state: (): { data: DataArray } => ({
+  state: (): { data: DataArray; theme: 'light'|'dark' } => ({
     data: [
       {
         title: '为什么写博客',
@@ -25,7 +25,8 @@ export const useDynamicStore = defineStore('Dynamic', {
           '博客是我们在互联网上的一块天地，相比于微博，小红书等，我们更希望是一个开放、分享、交流学习的地方。可以构建自己喜欢的事物和风格，创建自己的小世界。也能去分享心得，创造价值。',
         links: ''
       }
-    ]
+    ],
+    theme: 'light' // 默认主题
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
@@ -46,7 +47,7 @@ export const useDynamicStore = defineStore('Dynamic', {
         const htmlContent = mdParser.render(
           rawContent.replace(/^---[\s\S]*?---/, '')
         )
-        const MdStr = extractGlobstarMatch('/src/blog/**/*.md',path)
+        const MdStr = extractGlobstarMatch('/src/blog/**/*.md', path)
         if (MdStr) {
           fileName = MdStr + fileName
         }

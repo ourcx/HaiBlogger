@@ -25,13 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import MarkdownIt from "markdown-it";
 import { NPagination, NScrollbar } from "naive-ui";
 import MdList from "@/components/MD-list/MdLIst.vue";
 import type { IndexMDProps } from "./type";
 import { useDynamicStore } from "@/store";
-import { extractFrontmatter } from '@/utils/extractFrontmatter'
+import { extractFrontmatter } from "@/utils/extractFrontmatter";
 
 const DynamicStore = useDynamicStore();
 const props = withDefaults(defineProps<IndexMDProps>(), {
@@ -41,50 +41,20 @@ const props = withDefaults(defineProps<IndexMDProps>(), {
 
 // 定义文章类型
 interface BlogPost {
-  id: string;
+  id?: string;
   title: string;
-  date: string;
-  excerpt: string;
+  date?: string;
+  excerpt?: string;
   content: string;
   htmlContent?: string;
+  links?: string;
 }
 
-// 1. 安全获取 Markdown 文件
-const mdModules = import.meta.glob("/src/blog/**/*.md", {
-  eager: true,
-  query: "?raw", // 避免特殊字符问题
-});
 const page = ref(1);
-const posts = ref<BlogPost[]>([]);
-
-onMounted(() => {
-  const mdParser = new MarkdownIt();
-
-  try {
-    posts.value = Object.entries(mdModules).map(([path, module]: any) => {
-      const fileName = decodeURIComponent(path.split("/").pop() || "");
-      const id = fileName.replace(/\.md$/, "");
-      const rawContent = module.default;
-
-      const frontmatter = extractFrontmatter(rawContent);
-      console.log(frontmatter);
-      const htmlContent = mdParser.render(rawContent.replace(/^---[\s\S]*?---/, ""));
-
-      return {
-        id,
-        title: frontmatter.title || id,
-        date: frontmatter.date || "未知日期",
-        excerpt: frontmatter.excerpt || htmlContent.substring(0, 100) + "...",
-        content: rawContent,
-        htmlContent,
-      };
-    });
-    
-  } catch (error) {
-    console.error("处理 Markdown 文件时出错:", error);
-  }
+const base = 5;
+const posts = computed<BlogPost[]>(() => {
+  return DynamicStore.data.slice((page.value - 1) * base, page.value * base);
 });
-
 </script>
 
 <style scoped lang="scss">
@@ -115,7 +85,6 @@ onMounted(() => {
   color: #{$primary-color};
 }
 
-
 .fei-MD__body {
   flex: 1; // Allows this element to grow and fill available space
   overflow-y: auto; // Crucial for making the list scrollable
@@ -145,7 +114,7 @@ onMounted(() => {
   height: auto;
 }
 
-.fei-MD__title--subtitle{
+.fei-MD__title--subtitle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -167,7 +136,6 @@ onMounted(() => {
   .fei-MD__title {
     font-size: 2.2rem;
   }
-
 
   .fei-MD__list {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

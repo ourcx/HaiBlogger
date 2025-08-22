@@ -92,6 +92,12 @@ const menuOptions=computed<MenuOption[]>(() => [
     icon: renderIcon(BookIcon),
     whateverChildren: articlesChildren.value
   },
+  {
+    whateverLabel: "归档",
+    whateverKey: "markdown",
+    icon: renderIcon(WineIcon),
+    route: "markdownIndex",
+  }
 ]);
 
 onMounted(() => {
