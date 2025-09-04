@@ -20,30 +20,30 @@ import type { LinksProps } from "@/components/Links/types";
 
 // 模拟API获取数据
 const friendLinks = ref<LinksProps[]>([
-  {
-    src: "https://picsum.photos/100?random=1",
-    name: "张三的博客",
-    href: "https://zhangsan.com",
-    description: "前端技术分享与生活感悟"
-  },
-  {
-    src: "https://picsum.photos/100?random=2",
-    name: "李四的技术站",
-    href: "https://lisi.tech",
-    description: "专注于Vue和React前沿技术"
-  },
-  {
-    src: "https://picsum.photos/100?random=3",
-    name: "王五的笔记",
-    href: "https://wangwu.dev",
-    description: "算法与数据结构学习笔记"
-  },
-  {
-    src: "https://picsum.photos/100?random=4",
-    name: "前端小智",
-    href: "https://qianduanxiao.com",
-    description: "分享前端开发技巧和教程"
-  }
+  // {
+  //   src: "https://picsum.photos/100?random=1",
+  //   name: "张三的博客",
+  //   href: "https://zhangsan.com",
+  //   description: "前端技术分享与生活感悟"
+  // },
+  // {
+  //   src: "https://picsum.photos/100?random=2",
+  //   name: "李四的技术站",
+  //   href: "https://lisi.tech",
+  //   description: "专注于Vue和React前沿技术"
+  // },
+  // {
+  //   src: "https://picsum.photos/100?random=3",
+  //   name: "王五的笔记",
+  //   href: "https://wangwu.dev",
+  //   description: "算法与数据结构学习笔记"
+  // },
+  // {
+  //   src: "https://picsum.photos/100?random=4",
+  //   name: "前端小智",
+  //   href: "https://qianduanxiao.com",
+  //   description: "分享前端开发技巧和教程"
+  // }
 ]);
 
 // 随机排序友链

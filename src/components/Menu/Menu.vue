@@ -37,7 +37,8 @@ import {
   HomeOutline as HomeIcon,
   BriefcaseOutline as ProjectIcon,
   LinkOutline as LinkIcon,
-  InformationCircleOutline as AboutIcon
+  InformationCircleOutline as AboutIcon,
+  SettingsOutline as SettingIcon
 } from "@vicons/ionicons5";
 import {type RouteParamsRaw } from "vue-router";
 import type { VNodeChild } from "vue";
@@ -97,6 +98,13 @@ const menuOptions=computed<MenuOption[]>(() => [
     whateverKey: "markdown",
     icon: renderIcon(WineIcon),
     route: "markdownIndex",
+  },
+  {
+    whateverLabel: "时间线",
+    whateverKey: "timeline",
+    icon: renderIcon(SettingIcon),
+    route: "time"
+
   }
 ]);
 

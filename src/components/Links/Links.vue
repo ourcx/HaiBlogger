@@ -7,7 +7,7 @@
         mode="aspectFill"
         shape="circle"
         :screen="false"
-        width="50px"
+        width="40px"
         height="50px"
       />
     </span>

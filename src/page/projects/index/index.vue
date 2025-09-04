@@ -7,24 +7,46 @@
         <Divider>github</Divider>
         <div class="xh-projects-class__new">
           <links
-            src="https://s2.loli.net/2025/06/29/wiHWDFjzmEVYCT3.jpg"
-            name="1. 测试项目"
-            description="测试项目描述"
+            src="https://s2.loli.net/2025/08/19/GP4Lma8gVe5ItlE.jpg"
+            name="xiaohaiyunGo"
+            description="后端"
+            onclick="window.location.href='https://github.com/ourcx/xiaohaiyunGo'"
+            style="cursor: pointer"
           ></links>
           <links
-            src="https://s2.loli.net/2025/06/29/wiHWDFjzmEVYCT3.jpg"
-            name="1. 测试项目"
-            description="测试项目描述"
+            src="https://s2.loli.net/2025/06/13/SP6wneV4Zh52rKm.jpg"
+            name="xiaohaiyunHTML"
+            description="基于Vue3的网页简盘"
+            onclick="window.location.href='https://github.com/ourcx/xiaohaiyunHTML'"
+            style="cursor: pointer"
           ></links>
           <links
-            src="https://s2.loli.net/2025/06/29/wiHWDFjzmEVYCT3.jpg"
-            name="1. 测试项目"
-            description="测试项目描述"
+            src="https://s2.loli.net/2025/05/29/HSaD38fFVYmiWIo.png"
+            name="feiUI"
+            description="feiUI组件库，是一个仿element-plus的组件库，以其为基础进行进一步的扩展"
+            onclick="window.location.href='https://github.com/ourcx/feiUI'"
+            style="cursor: pointer"
           ></links>
           <links
-            src="https://s2.loli.net/2025/06/29/wiHWDFjzmEVYCT3.jpg"
-            name="1. 测试项目"
-            description="测试项目描述"
+            src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
+            name="cherry-markdown"
+            description="A Markdown Editor"
+            onclick="window.location.href='https://github.com/ourcx/cherry-markdown'"
+            style="cursor: pointer"
+          ></links>
+          <links
+            src="https://s2.loli.net/2025/03/04/tQzyHhxs76Y1EU9.jpg"
+            name="timetable"
+            description="一个校园课表小程序"
+            onclick="window.location.href='https://github.com/ourcx/timetable'"
+            style="cursor: pointer"
+          ></links>
+          <links
+            src="https://s2.loli.net/2025/03/04/tQzyHhxs76Y1EU9.jpg"
+            name="xiaohaiyunAdmin"
+            description="小海云网盘的后台管理系统，使用nextjs和ts等技术栈"
+            onclick="window.location.href='https://github.com/ourcx/xiaohaiyunAdmin'"
+            style="cursor: pointer"
           ></links>
         </div>
       </div>
@@ -92,7 +114,7 @@ import Divider from "@/components/Divider/Divider.vue";
   display: flex;
   flex-wrap: wrap; // 允许项目卡片换行
   justify-content: center; // 水平居中项目卡片
-  gap: 40px; // 设置项目卡片之间的间距
+  gap: 70px; // 设置项目卡片之间的间距
   padding-top: 20px; // 与标题之间留出空间
   width: 100%;
 }

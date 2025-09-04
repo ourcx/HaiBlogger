@@ -31,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'about',
     component: () => import('@/page/About/index.vue')
   },
+  {
+    path: '/time',
+    name: 'time',
+    component: () => import('@/page/TimeLine/index.vue')
+  },
   // 确保所有菜单项都有对应的路由
   {
     path: '/:pathMatch(.*)*', // 添加404路由

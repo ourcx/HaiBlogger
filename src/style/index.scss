@@ -22,13 +22,6 @@ $success-color: #96c24e;   // 成功色 - 柔绿
 $warning-color: #fed71a;   // 警告色 - 明亮黄
 $error-color: #efafad;     // 错误色 - 粉红
 
-/**
- * 文字颜色
- */
-$text-color-base: #333;
-$text-color-1: rgba(0, 0, 0, 0.9);
-$text-color-2: rgba(0, 0, 0, 0.82);
-$text-color-3: rgba(0, 0, 0, 0.6);
 
 /**
  * 边框与圆角
@@ -76,26 +69,3 @@ $theme-colors: (
   "error": $error-color
 );
 
-/**
- * 导出给TypeScript使用的变量
- * 用于naive-ui主题配置
- */
-:export {
-  primaryColor: $primary-color;
-  primaryColorHover: $primary-color-hover;
-  primaryColorPressed: $primary-color-pressed;
-  primaryColorSuppl: $primary-color-suppl;
-  infoColor: $info-color;
-  successColor: $success-color;
-  warningColor: $warning-color;
-  errorColor: $error-color;
-  textColorBase: $text-color-base;
-  textColor1: $text-color-1;
-  textColor2: $text-color-2;
-  textColor3: $text-color-3;
-  borderColor: $border-color;
-  borderRadius: $border-radius;
-  borderRadiusSmall: $border-radius-small;
-  fontFamily: $font-family;
-  fontSize: $font-size-base;
-}
