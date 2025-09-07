@@ -1,8 +1,11 @@
-@use "./index.scss" as *;
+@use './index.scss' as *;
+
+/* 定义 SASS 变量 */
+$li-count: 14; /* 气泡总数 */
 
 .area {
   width: 90vw;
-  height: #{$xh-height}vh; // 直接使用变量
+  height: 100vh; /* 假设vh单位，或使用你定义的变量 */
   position: absolute;
 }
 
@@ -13,162 +16,77 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: 1; /* 降低背景层级 */
+  z-index: 1;
+  /* 确保父容器是相对定位或绝对定位 */
+  position: relative;
 }
 
-.circles {
-  /* 保持原有布局属性 */
-  li {
-    position: absolute;
-    display: block;
-    background: rgba(255,255,255,0.2);
-    border: 1px solid #777676;
-    bottom: -150px;
-    animation: animate 25s linear infinite;
-    
-    /* 基础形状控制 */
-    --size: 20px;
-    width: var(--size);
-    height: var(--size);
-    
-    /* 形状变换动画 */
-    transition: clip-path 2s ease, border-radius 3s ease;
-    
-    /* 随机形状生成 */
-    @for $i from 1 through 10 {
-      &:nth-child(#{$i}) {
-        /* 尺寸差异 */
-        --size: #{20 + random(80)}px;
-        
-        /* 形状差异 */
-        @if $i % 4 == 0 {
-          clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        } @else if $i % 3 == 0 {
-          border-radius: 50% 20% / 10% 40%;
-        } @else if $i % 2 == 0 {
-          clip-path: circle(50% at 50% 50%);
-        } @else {
-          border-radius: 50%;
-        }
+.circles li {
+  position: absolute;
+  display: block;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid #777676;
+  bottom: -150px;
+  animation: animate 25s linear infinite;
+
+  /* 随机形状生成，使用SASS */
+  @for $i from 1 through $li-count {
+    &:nth-child(#{$i}) {
+      /* 位置差异化 */
+      $left-pos: random(100);
+      left: $left-pos * 1%; // 修复：避免插值，使用数学运算生成合法单位
+
+      /* 尺寸差异化 */
+      $size: 20 + random(80);
+      width: $size * 1px; // 同样推荐方式
+      height: $size * 1px;
+
+      /* 动画延迟与时长差异化 */
+      animation-delay: #{(random(1000) / 100)}s;
+      animation-duration: #{(random(1000) / 100 + 2)}s;
+
+      /* 形状差异化 */
+      $shape-type: random(4);
+      @if $shape-type == 1 {
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* 菱形 */
+      } @else if $shape-type == 2 {
+        border-radius: 50% 20% / 10% 40%; /* 椭圆形 */
+      } @else if $shape-type == 3 {
+        clip-path: circle(50% at 50% 50%); /* 圆形 */
+      } @else {
+        border-radius: 50%; /* 默认圆形 */
       }
     }
   }
+
   
-  /* 差异化样式保持原有配置 */
-  li:nth-child(1) {
-    left: 25%;
-    --size: 80px;
-    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-  }
-  /* 其他子元素样式... */
 }
 
-.circles li:nth-child(1) {
-  left: 25%;
-  width: 80px;
-  height: 80px;
-  animation-delay: 0s;
+/* 在原来的 li 样式中添加或修改 */
+.circles li {
+  /* ... 保持原有属性 ... */
+  animation: animate 25s cubic-bezier(0.2, 0.8, 0.8, 0.2) infinite;
 }
-
-/* ----------- 新增10个圆圈的差异化样式 ----------- */
-/* 第2个圆圈 - 向右偏移、缩小、延迟启动 */
-.circles li:nth-child(2) {
-  left: 32%;
-  width: 75px;
-  height: 75px;
-  animation-delay: 0.6s;
-  animation-duration: 3.8s;
-}
-
-/* 第3个圆圈 - 更大尺寸、更长延迟 */
-.circles li:nth-child(3) {
-  left: 40%;
-  width: 90px;
-  height: 90px;
-  animation-delay: 1.2s;
-  animation-duration: 4.2s;
-}
-
-/* 第4个圆圈 - 左侧回弹、快速动画 */
-.circles li:nth-child(4) {
-  left: 18%;
-  width: 65px;
-  height: 65px;
-  animation-delay: 1.8s;
-  animation-duration: 2.5s;
-}
-
-/* 第5个圆圈 - 中心位置、中等参数 */
-.circles li:nth-child(5) {
-  left: 50%;
-  width: 85px;
-  height: 85px;
-  animation-delay: 2.4s;
-  animation-duration: 3.5s;
-}
-
-/* 第6个圆圈 - 小尺寸、长持续时间 */
-.circles li:nth-child(6) {
-  left: 60%;
-  width: 55px;
-  height: 55px;
-  animation-delay: 3s;
-  animation-duration: 5s;
-}
-
-/* 第7个圆圈 - 右侧边缘、快速动画 */
-.circles li:nth-child(7) {
-  left: 75%;
-  width: 70px;
-  height: 70px;
-  animation-delay: 3.6s;
-  animation-duration: 2.8s;
-}
-
-/* 第8个圆圈 - 随机位置、大延迟 */
-.circles li:nth-child(8) {
-  left: 10%;
-  width: 95px;
-  height: 95px;
-  animation-delay: 4.2s;
-  animation-duration: 4.5s;
-}
-
-/* 第9个圆圈 - 中右位置、缓慢动画 */
-.circles li:nth-child(9) {
-  left: 65%;
-  width: 88px;
-  height: 88px;
-  animation-delay: 4.8s;
-  animation-duration: 5.5s;
-}
-
-/* 第10个圆圈 - 分散布局、超长延迟 */
-.circles li:nth-child(10) {
-  left: 85%;
-  width: 60px;
-  height: 60px;
-  animation-delay: 5.4s;
-  animation-duration: 3.2s;
-}
-
-
-
-/* 在复制分别处理剩下十个，delay要设置多一点，还有设置大小和duration不同 */
 
 @keyframes animate {
   0% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0) rotate(0deg) translateX(0px);
     opacity: 1;
-    filter: blur(0px);
+  }
+  25% {
+    transform: translateY(-500px) rotate(90deg) translateX(500px);
+    opacity: 0.7;
   }
   50% {
-    /* 动画中途可以改变形状 */
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    transform: translateY(-1000px) rotate(180deg) translateX(-500px);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateY(-1500px) rotate(270deg) translateX(500px);
+    opacity: 0.2;
   }
   100% {
-    transform: translateY(-2000px) rotate(720deg);
-    opacity: 0.1;
-    filter: blur(2px);
+    transform: translateY(-2000px) rotate(360deg) translateX(0px);
+    opacity: 0;
   }
 }

@@ -103,7 +103,6 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
   padding: 25px 20px;
   
   &__main {
-    background: #fff;
     border-radius: 12px;
     
     &--title {
@@ -127,7 +126,6 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
     &--other {
       color: #5a6573;
       margin-bottom: 20px;
-      background: #f8f9fa;
       padding: 10px;
       border-radius: 8px;
       border-left: 4px solid #{$primary-color};

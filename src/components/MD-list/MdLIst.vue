@@ -55,7 +55,6 @@ const clickRouter = () => {
   height: 200px;
   border-radius: 12px;
   transition: all 0.3s ease-in-out;
-  background-color: #fff;
   width: 100%;
   display: flex;
   flex-direction: column;

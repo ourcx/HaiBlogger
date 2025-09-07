@@ -2,7 +2,7 @@
   <div class="xh-projects">
     <div class="xh-projects__main">
       <div class="xh-projects__main--title">项目</div>
-      <div class="xh-title__mini">9个分类,10个项目</div>
+      <div class="xh-title__mini">好像我还没什么大项目啊啊</div>
       <div class="xh-projects__main--projects">
         <Divider>github</Divider>
         <div class="xh-projects-class__new">
@@ -30,7 +30,7 @@
           <links
             src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
             name="cherry-markdown"
-            description="A Markdown Editor"
+            description="A Markdown Editor，这是我参与的第一个开源项目"
             onclick="window.location.href='https://github.com/ourcx/cherry-markdown'"
             style="cursor: pointer"
           ></links>
@@ -46,6 +46,13 @@
             name="xiaohaiyunAdmin"
             description="小海云网盘的后台管理系统，使用nextjs和ts等技术栈"
             onclick="window.location.href='https://github.com/ourcx/xiaohaiyunAdmin'"
+            style="cursor: pointer"
+          ></links>
+          <links
+            src="https://s2.loli.net/2025/09/07/D5hwT7Pen4fHF9N.jpg"
+            name="qk"
+            description="庆快校园"
+            onclick="window.location.href='/'"
             style="cursor: pointer"
           ></links>
         </div>

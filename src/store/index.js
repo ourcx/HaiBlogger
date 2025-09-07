@@ -1,0 +1,53 @@
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { extractFrontmatter } from '@/utils/extractFrontmatter';
+import MarkdownIt from 'markdown-it';
+import { cleanMarkdown } from '@/utils/cleanMarkdown';
+import { extractGlobstarMatch } from '@/utils/glob';
+// 示例 store
+export const useDynamicStore = defineStore('Dynamic', {
+    state: () => ({
+        data: [
+            {
+                title: '为什么写博客',
+                content: '博客是我们在互联网上的一块天地，相比于微博，小红书等，我们更希望是一个开放、分享、交流学习的地方。可以构建自己喜欢的事物和风格，创建自己的小世界。也能去分享心得，创造价值。',
+                links: ''
+            }
+        ],
+        theme: 'light' // 默认主题
+    }),
+    getters: {
+    // doubleCount: (state) => state.counter * 2
+    },
+    actions: {
+        initData() {
+            const mdParser = new MarkdownIt();
+            const posts = ref([]);
+            const mdModules = import.meta.glob('/src/blog/**/*.md', {
+                eager: true,
+                query: '?raw' // 避免特殊字符问题
+            });
+            console.log(mdModules);
+            posts.value = Object.entries(mdModules).map(([path, module]) => {
+                let fileName = decodeURIComponent(path.split('/').pop() || '');
+                const rawContent = cleanMarkdown(module.default);
+                const frontmatter = extractFrontmatter(rawContent);
+                const htmlContent = mdParser.render(rawContent.replace(/^---[\s\S]*?---/, ''));
+                const MdStr = extractGlobstarMatch('/src/blog/**/*.md', path);
+                if (MdStr) {
+                    fileName = MdStr + fileName;
+                }
+                return {
+                    id: fileName,
+                    title: fileName,
+                    date: frontmatter.date || '未知日期',
+                    excerpt: frontmatter.excerpt || htmlContent.substring(0, 100) + '...',
+                    content: module.default
+                };
+            });
+            this.data = posts.value.sort((a, b) => a.title.localeCompare(b.title));
+            console.log(posts.value);
+        }
+    }
+});
+//# sourceMappingURL=index.js.map

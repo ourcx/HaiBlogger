@@ -13,8 +13,20 @@
       </div>
       <div class="fei-MD__body">
         <div class="fei-MD__list">
-          <div class="fei-MD__item" v-for="item in posts" :key="item.id">
+          <div
+            class="fei-MD__item"
+            v-for="item in posts"
+            :key="item.id"
+            v-if="posts.length > 0"
+          >
             <md-list :post="item" :loading="false" />
+          </div>
+          <div v-else>
+            <n-result status="418" title="418 我是个杯具" description="一切尽在不言中">
+              <template #footer>
+                <n-button>接受真相就是这么简单</n-button>
+              </template>
+            </n-result>
           </div>
         </div>
       </div>
@@ -27,7 +39,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import MarkdownIt from "markdown-it";
-import { NPagination, NScrollbar } from "naive-ui";
+import { NPagination, NScrollbar,NResult,NButton } from "naive-ui";
 import MdList from "@/components/MD-list/MdLIst.vue";
 import type { IndexMDProps } from "./type";
 import { useDynamicStore } from "@/store";
