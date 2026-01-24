@@ -42,10 +42,6 @@ jobs:
           else
             echo "No CNAME file found, creating CNAME.md placeholder"
             echo "norubias.site" > ./dist/CNAME.md
-            echo "" >> ./dist/CNAME.md
-            echo "This file is a placeholder to prevent overwriting custom domains." >> ./dist/CNAME.md
-            echo "If you have a custom domain, create a CNAME file in the repository root." >> ./dist/CNAME.md
-            echo "The file should contain your domain name, e.g., example.com" >> ./dist/CNAME.md
           fi
 
       - name: Deploy to dev branch
