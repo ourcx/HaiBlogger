@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [20]  # 建议只使用 Node.js 20
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
@@ -20,10 +20,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Clean npm cache
+        run: npm cache clean --force
 
       - name: Install dependencies
         run: |
-          npm i
+          npm ci --legacy-peer-deps  # 使用 ci 命令替代 i，并添加 --legacy-peer-deps
 
       - name: Build
         run: npm run build
