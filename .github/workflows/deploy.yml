@@ -7,27 +7,26 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20]  # 建议只使用 Node.js 20
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
         with:
           ref: master
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: 20
+          # 不设置 cache，因为每次都可能重新生成锁文件，缓存可能无效
 
-      - name: Clean npm cache
-        run: npm cache clean --force
+      - name: Clean npm cache and remove lock file
+        run: |
+          npm cache clean --force
+          rm -f package-lock.json
 
       - name: Install dependencies
         run: |
-          npm ci --legacy-peer-deps  # 使用 ci 命令替代 i，并添加 --legacy-peer-deps
+          npm install --legacy-peer-deps
 
       - name: Build
         run: npm run build
