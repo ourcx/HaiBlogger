@@ -41,7 +41,6 @@ jobs:
               "vue-router": "^4.5.1"
             },
             "devDependencies": {
-              "@vitejs/plugin-vue": "^4.6.2",
               "vite": "^5.2.11",
               "typescript": "~5.8.3",
               "@types/markdown-it": "^14.1.0"
