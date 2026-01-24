@@ -4,6 +4,10 @@ on:
   push:
     branches: [master]
 
+# 添加必要的权限配置
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -17,12 +21,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # 不设置 cache，因为每次都可能重新生成锁文件，缓存可能无效
 
-      - name: Clean npm cache and remove lock file
+      - name: Clean npm cache
         run: |
           npm cache clean --force
-          rm -f package-lock.json
 
       - name: Install dependencies
         run: |
@@ -31,9 +33,27 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Create or preserve CNAME file
+        run: |
+          # 检查是否存在 CNAME 文件
+          if [ -f CNAME ]; then
+            echo "CNAME file exists, copying to dist directory"
+            cp CNAME ./dist/CNAME
+          else
+            echo "No CNAME file found, creating CNAME.md placeholder"
+            echo "https://norubias.site/" > ./dist/CNAME.md
+            echo "" >> ./dist/CNAME.md
+            echo "This file is a placeholder to prevent overwriting custom domains." >> ./dist/CNAME.md
+            echo "If you have a custom domain, create a CNAME file in the repository root." >> ./dist/CNAME.md
+            echo "The file should contain your domain name, e.g., example.com" >> ./dist/CNAME.md
+          fi
+
       - name: Deploy to dev branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: dev
+          force_orphan: false  # 设置为 false 以保留历史，这样不会删除 CNAME 文件
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
