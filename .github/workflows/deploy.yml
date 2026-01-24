@@ -10,30 +10,53 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Setup Node.js with compatibility fixes
+        
+      - name: Setup Node.js 18
         uses: actions/setup-node@v4
         with:
-          node-version: '18'  # 使用 Node.js 18 更稳定
+          node-version: '18'
           
-      - name: Fix crypto issue
+      - name: Clean install dependencies
         run: |
-          # 添加这个 polyfill 来修复 crypto.hash 问题
-          echo "import { webcrypto } from 'crypto'; globalThis.crypto = webcrypto;" > crypto-polyfill.js
+          # 清除现有的 node_modules 和 package-lock
+          rm -rf node_modules package-lock.json
           
-      - name: Install dependencies with fixed versions
-        run: |
-          # 临时安装兼容版本
-          npm install vite@^5.0.0 @vitejs/plugin-vue@^4.5.0
-          # 安装其他依赖
-          npm ci
+          # 创建新的 package.json 只包含必需的依赖
+          cat > package-new.json << 'EOF'
+          {
+            "name": "xh-blog",
+            "private": true,
+            "version": "0.0.0",
+            "type": "module",
+            "scripts": {
+              "dev": "vite",
+              "build": "vite build",
+              "preview": "vite preview"
+            },
+            "dependencies": {
+              "markdown-it": "^14.1.0",
+              "naive-ui": "^2.42.0",
+              "pinia": "^3.0.3",
+              "vue": "^3.5.17",
+              "vue-router": "^4.5.1"
+            },
+            "devDependencies": {
+              "@vitejs/plugin-vue": "^4.6.2",
+              "vite": "^5.2.11",
+              "typescript": "~5.8.3",
+              "@types/markdown-it": "^14.1.0"
+            }
+          }
+          EOF
           
-      - name: Build with polyfill
-        run: |
-          # 使用 Node 选项加载 polyfill
-          NODE_OPTIONS="--require ./crypto-polyfill.js" npm run build
+          # 使用新的 package.json 安装依赖
+          mv package-new.json package.json
+          npm install
           
-      - name: Deploy
+      - name: Build
+        run: npm run build
+        
+      - name: Deploy to dev
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
