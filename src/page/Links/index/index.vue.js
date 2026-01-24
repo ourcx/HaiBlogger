@@ -1,31 +1,61 @@
-import { ref } from 'vue';
+import { ref } from "vue";
 import Links from "@/components/Links/Links.vue";
-// 模拟API获取数据
+// 模拟 API 获取数据
 const friendLinks = ref([
-// {
-//   src: "https://picsum.photos/100?random=1",
-//   name: "张三的博客",
-//   href: "https://zhangsan.com",
-//   description: "前端技术分享与生活感悟"
-// },
-// {
-//   src: "https://picsum.photos/100?random=2",
-//   name: "李四的技术站",
-//   href: "https://lisi.tech",
-//   description: "专注于Vue和React前沿技术"
-// },
-// {
-//   src: "https://picsum.photos/100?random=3",
-//   name: "王五的笔记",
-//   href: "https://wangwu.dev",
-//   description: "算法与数据结构学习笔记"
-// },
-// {
-//   src: "https://picsum.photos/100?random=4",
-//   name: "前端小智",
-//   href: "https://qianduanxiao.com",
-//   description: "分享前端开发技巧和教程"
-// }
+    {
+        src: "https://avatars.githubusercontent.com/u/151366823?v=4",
+        name: "二次元/FE 小霏雾",
+        href: "https://github.com/Purpleplanen",
+        description: "PurplePlanen",
+    },
+    {
+        src: "http://elysia.wiki:222/assets/img/Rlogo.png",
+        name: "We are always devout scholars",
+        href: "http://elysia.wiki:222/",
+        description: "Java 大王喵~  RobinElysia",
+    },
+    {
+        src: "https://avatars.githubusercontent.com/u/91131723?s=400&u=cc52bb8ae67e4a4706570ac84399dc7519cfa749&v=4",
+        name: "摇摇晃晃，也能到达目的地。",
+        href: "https://blog.rand777.space/",
+        description: "笨笨的 Rand777",
+    },
+    {
+        src: "https://avatars.githubusercontent.com/u/176664901?v=4",
+        name: "独酌清月",
+        href: "https://www.lunarain.top/",
+        description: "CS learner LunaRain_079",
+    },
+    {
+        src: "https://avatars.githubusercontent.com/u/151366823?v=4",
+        name: "二次元/前端站",
+        href: "https://Purpleplanen.top",
+        description: "FE learner PurplePlanen",
+    },
+    {
+        src: "http://icstudio.top/static/img/61a200639d3d0b566ad79b4514760dbf.eaf1125e2f81e21ab44c79e01bc584a.webp",
+        name: "枫城的小站",
+        href: "http://icstudio.top",
+        description: "solana | nextjs | rust | blockchain",
+    },
+    {
+        src: "https://immort.top/image/e13254c44147cea5d9f1302c5878819d.jpg",
+        name: "Immortal's Blog",
+        href: "https://blog.immortel.top/",
+        description: "随便 Immortal's Blog",
+    },
+    {
+        src: "https://kawayww.com/images/blog/avatar.avif",
+        name: "柳上川",
+        href: "http://kawayww.com/",
+        description: " 啊啊你好！我是柳上川，这里是我的个人博客，请随意探索吧！",
+    },
+    {
+        src: "https://s2.loli.net/2026/01/24/8IpK4nT6LCMFWuJ.jpg",
+        name: "Seeridia 的小窝",
+        href: "https://blog.seeridia.top/",
+        description: "Seeridia",
+    }
 ]);
 // 随机排序友链
 friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
@@ -49,7 +79,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.d
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "xh-links__main--other" },
 });
-__VLS_asFunctionalElement(__VLS_intrinsicElements.br, __VLS_intrinsicElements.br)({});
+__VLS_asFunctionalElement(__VLS_intrinsicElements.br)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "xh-links__main--friends" },
 });

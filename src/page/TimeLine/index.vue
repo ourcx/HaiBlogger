@@ -31,7 +31,8 @@ const articles = [
   {
     title: "uniapp在微信小程序中实现SSE进行通信",
     date: "2025年8月29日",
-    description: "最近帮忙做一个项目的前端，遇到了一种通信方式就是SSE，这种也算是我的薄弱点，以前...",
+    description:
+      "最近帮忙做一个项目的前端，遇到了一种通信方式就是SSE，这种也算是我的薄弱点，以前...",
   },
   {
     title: "我的组件库设计思想",
@@ -42,7 +43,14 @@ const articles = [
   {
     title: "自己实现一个聊天模块",
     date: "2025年6月7日",
-    description: "大致的实现效果 群聊和私聊 联系人 这个是我独立写完的一个模块，以前并没有怎么了解...",
+    description:
+      "大致的实现效果 群聊和私聊 联系人 这个是我独立写完的一个模块，以前并没有怎么了解...",
+  },
+  {
+    title: "uniapp的双token",
+    date: "2025年9月25日",
+    description:
+      "在小程序实现双token增强安全性和优化用户的体验",
   },
 ];
 </script>
@@ -201,7 +209,7 @@ $heading-color: #741616;
   }
 }
 
-.timeline-title{
+.timeline-title {
   text-align: center;
   font-size: 0.7rem;
   color: $secondary-color;

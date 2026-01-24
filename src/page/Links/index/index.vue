@@ -3,54 +3,85 @@
     <div class="xh-links__main">
       <div class="xh-links__main--title">友邻</div>
       <div class="xh-links__main--other">
-        欢迎交换友链呀 ~<br>
+        欢迎交换友链呀 ~<br />
         以下是我的友链列表，列表随机排序，信息如果有变动，可以联系我进行更改。
       </div>
       <div class="xh-links__main--friends">
-        <Links v-for="value in friendLinks" :key="value.name" :src="value.src" :name="value.name" :href="value.href" :description="value.description" />
+        <Links v-for="value in friendLinks" :key="value.name" :src="value.src" :name="value.name" :href="value.href"
+          :description="value.description" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
 import Links from "@/components/Links/Links.vue";
 import type { LinksProps } from "@/components/Links/types";
 
-// 模拟API获取数据
+// 模拟 API 获取数据
 const friendLinks = ref<LinksProps[]>([
-  // {
-  //   src: "https://picsum.photos/100?random=1",
-  //   name: "张三的博客",
-  //   href: "https://zhangsan.com",
-  //   description: "前端技术分享与生活感悟"
-  // },
-  // {
-  //   src: "https://picsum.photos/100?random=2",
-  //   name: "李四的技术站",
-  //   href: "https://lisi.tech",
-  //   description: "专注于Vue和React前沿技术"
-  // },
-  // {
-  //   src: "https://picsum.photos/100?random=3",
-  //   name: "王五的笔记",
-  //   href: "https://wangwu.dev",
-  //   description: "算法与数据结构学习笔记"
-  // },
-  // {
-  //   src: "https://picsum.photos/100?random=4",
-  //   name: "前端小智",
-  //   href: "https://qianduanxiao.com",
-  //   description: "分享前端开发技巧和教程"
-  // }
+  {
+    src: "https://avatars.githubusercontent.com/u/151366823?v=4",
+    name: "二次元/FE 小霏雾",
+    href: "https://github.com/Purpleplanen",
+    description: "PurplePlanen",
+  },
+  {
+    src: "http://elysia.wiki:222/assets/img/Rlogo.png",
+    name: "We are always devout scholars",
+    href: "http://elysia.wiki:222/",
+    description: "Java 大王喵~  RobinElysia",
+  },
+  {
+    src:
+      "https://avatars.githubusercontent.com/u/91131723?s=400&u=cc52bb8ae67e4a4706570ac84399dc7519cfa749&v=4",
+    name: "摇摇晃晃，也能到达目的地。",
+    href: "https://blog.rand777.space/",
+    description: "笨笨的 Rand777",
+  },
+  {
+    src: "https://avatars.githubusercontent.com/u/176664901?v=4",
+    name: "独酌清月",
+    href: "https://www.lunarain.top/",
+    description: "CS learner LunaRain_079",
+  },
+  {
+    src: "https://avatars.githubusercontent.com/u/151366823?v=4",
+    name: "二次元/前端站",
+    href: "https://Purpleplanen.top",
+    description: "FE learner PurplePlanen",
+  },
+  {
+    src:
+      "http://icstudio.top/static/img/61a200639d3d0b566ad79b4514760dbf.eaf1125e2f81e21ab44c79e01bc584a.webp",
+    name: "枫城的小站",
+    href: "http://icstudio.top",
+    description: "solana | nextjs | rust | blockchain",
+  },
+  {
+    src: "https://immort.top/image/e13254c44147cea5d9f1302c5878819d.jpg",
+    name: "Immortal's Blog",
+    href: "https://blog.immortel.top/",
+    description: "随便 Immortal's Blog",
+  },
+  {
+    src: "https://kawayww.com/images/blog/avatar.avif",
+    name: "柳上川",
+    href: "http://kawayww.com/",
+    description: " 啊啊你好！我是柳上川，这里是我的个人博客，请随意探索吧！",
+  },
+  {
+    src: "https://s2.loli.net/2026/01/24/8IpK4nT6LCMFWuJ.jpg",
+    name: "Seeridia 的小窝",
+    href: "https://blog.seeridia.top/",
+    description: "Seeridia",
+  }
 ]);
 
 // 随机排序友链
 friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
 </script>
-
-
 
 <style scoped lang="scss">
 @use "../../../style/index.scss" as *;
@@ -96,21 +127,20 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
   }
 }
 
-
 .xh-links {
   max-width: 1200px;
   margin: 0 auto;
   padding: 25px 20px;
-  
+
   &__main {
     border-radius: 12px;
-    
+
     &--title {
       font-weight: 700;
       color: #2c3e50;
       margin-bottom: 20px;
       position: relative;
-      
+
       &::after {
         content: "";
         position: absolute;
@@ -118,11 +148,11 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
         left: 0;
         width: 60px;
         height: 4px;
-        background: linear-gradient(90deg,#{$primary-color}, #35495e);
+        background: linear-gradient(90deg, #{$primary-color}, #35495e);
         border-radius: 2px;
       }
     }
-    
+
     &--other {
       color: #5a6573;
       margin-bottom: 20px;
@@ -130,7 +160,7 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
       border-radius: 8px;
       border-left: 4px solid #{$primary-color};
     }
-    
+
     &--friends {
       display: grid;
       width: calc(100% - 40px);
@@ -143,14 +173,15 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
 @media (max-width: 768px) {
   .xh-links {
     padding: 20px 15px;
-    
+    padding-left: 10vw;
+
     &__main {
       padding: 25px 15px;
-      
+
       &--title {
         font-size: 2rem;
       }
-      
+
       &--friends {
         grid-template-columns: 1fr;
       }

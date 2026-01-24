@@ -83,14 +83,14 @@ const __VLS_10 = __VLS_9({
 const __VLS_12 = __VLS_asFunctionalComponent(Links, new Links({
     src: "https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg",
     name: "cherry-markdown",
-    description: "A Markdown Editor",
+    description: "A Markdown Editor，这是我参与的第一个开源项目",
     onclick: "window.location.href='https://github.com/ourcx/cherry-markdown'",
     ...{ style: {} },
 }));
 const __VLS_13 = __VLS_12({
     src: "https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg",
     name: "cherry-markdown",
-    description: "A Markdown Editor",
+    description: "A Markdown Editor，这是我参与的第一个开源项目",
     onclick: "window.location.href='https://github.com/ourcx/cherry-markdown'",
     ...{ style: {} },
 }, ...__VLS_functionalComponentArgsRest(__VLS_12));
@@ -126,6 +126,22 @@ const __VLS_19 = __VLS_18({
     onclick: "window.location.href='https://github.com/ourcx/xiaohaiyunAdmin'",
     ...{ style: {} },
 }, ...__VLS_functionalComponentArgsRest(__VLS_18));
+/** @type {[typeof Links, typeof Links, ]} */ ;
+// @ts-ignore
+const __VLS_21 = __VLS_asFunctionalComponent(Links, new Links({
+    src: "https://s2.loli.net/2025/09/07/D5hwT7Pen4fHF9N.jpg",
+    name: "qk",
+    description: "庆快校园",
+    onclick: "window.location.href='/'",
+    ...{ style: {} },
+}));
+const __VLS_22 = __VLS_21({
+    src: "https://s2.loli.net/2025/09/07/D5hwT7Pen4fHF9N.jpg",
+    name: "qk",
+    description: "庆快校园",
+    onclick: "window.location.href='/'",
+    ...{ style: {} },
+}, ...__VLS_functionalComponentArgsRest(__VLS_21));
 /** @type {__VLS_StyleScopedClasses['xh-projects']} */ ;
 /** @type {__VLS_StyleScopedClasses['xh-projects__main']} */ ;
 /** @type {__VLS_StyleScopedClasses['xh-projects__main--title']} */ ;
