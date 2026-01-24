@@ -2,36 +2,23 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master]  # 当推送到 master 分支时触发
+    branches: [master]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout master
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        
+      - uses: actions/setup-node@v4
         with:
-          ref: master  # 明确指定检出 master 分支
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-        env:
-          NODE_ENV: production
-
+          node-version: '18'
+          
+      - run: npm ci
+      - run: npm run build
+      
       - name: Deploy to dev branch
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: dev  # 部署到 dev 分支
-          force_orphan: true  # 强制清空 dev 分支，只保留 dist 内容
-          keep_files: false  # 不保留之前的文件
+          branch: dev
+          folder: dist
