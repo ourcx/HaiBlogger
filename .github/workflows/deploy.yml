@@ -41,7 +41,7 @@ jobs:
             cp CNAME ./dist/CNAME
           else
             echo "No CNAME file found, creating CNAME.md placeholder"
-            echo "norubias.site" > ./dist/CNAME.md
+            echo "norubias.site" > ./dist/CNAME
           fi
 
       - name: Deploy to dev branch
