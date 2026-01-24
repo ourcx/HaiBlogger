@@ -41,7 +41,7 @@ jobs:
             cp CNAME ./dist/CNAME
           else
             echo "No CNAME file found, creating CNAME.md placeholder"
-            echo "https://norubias.site/" > ./dist/CNAME.md
+            echo "norubias.site" > ./dist/CNAME.md
             echo "" >> ./dist/CNAME.md
             echo "This file is a placeholder to prevent overwriting custom domains." >> ./dist/CNAME.md
             echo "If you have a custom domain, create a CNAME file in the repository root." >> ./dist/CNAME.md
