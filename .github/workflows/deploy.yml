@@ -5,34 +5,37 @@ on:
     branches: [master]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
     steps:
-      - name: Checkout master
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: master
-
-      - name: Setup Node.js ${{ matrix.node-version }}
+      
+      - name: Setup Node.js with compatibility fixes
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
+          node-version: '18'  # 使用 Node.js 18 更稳定
+          
+      - name: Fix crypto issue
         run: |
+          # 添加这个 polyfill 来修复 crypto.hash 问题
+          echo "import { webcrypto } from 'crypto'; globalThis.crypto = webcrypto;" > crypto-polyfill.js
+          
+      - name: Install dependencies with fixed versions
+        run: |
+          # 临时安装兼容版本
+          npm install vite@^5.0.0 @vitejs/plugin-vue@^4.5.0
+          # 安装其他依赖
           npm ci
-          # 如果使用 Node.js 18 或 20，可以尝试不更新，或者更新到最新
-          npm update @vitejs/plugin-vue vite
-
-      - name: Build
-        run: npm run build
-
-      - name: Deploy to dev branch
-        uses: peaceiris/actions-gh-pages@v3
+          
+      - name: Build with polyfill
+        run: |
+          # 使用 Node 选项加载 polyfill
+          NODE_OPTIONS="--require ./crypto-polyfill.js" npm run build
+          
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: dev
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
+          folder: dist
