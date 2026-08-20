@@ -48,78 +48,76 @@ const SocialLeave = () => {
 </script>
 
 <template>
-  <div class="xh-home">
-    <div class="xh-info-container">
-      <n-scrollbar class="xh-home-scroll">
-        <div class="xh-avatar-container">
-          <n-avatar
-            round
-            :size="80"
-            src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
-            class="xh-avatar"
-          />
-        </div>
-        <div class="xh-info-text">
-          <div class="xh-name">小海</div>
-          <div class="xh-job"><Light>前端开发者</Light>-向阳花木易为春</div>
-          <div class="xh-tags">
-            <span class="xh-tag">Vue</span>
-            <span class="xh-tag">React</span>
-            <span class="xh-tag">jest</span>
-            <span class="xh-tag">Typescript</span>
-            <span class="xh-tag">Javascript</span>
-            <span class="xh-tag">CSS</span>
-            <span class="xh-tag">HTML</span>
-            <span class="xh-tag">Node</span>
-            <span class="xh-tag">Git</span>
-            <span class="xh-tag">Golang</span>
+  <div class="xh-home-layout">
+    <div class="xh-home">
+      <div class="xh-info-container">
+        <n-scrollbar class="xh-home-scroll">
+          <div class="xh-avatar-container">
+            <n-avatar
+              round
+              :size="80"
+              src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
+              class="xh-avatar"
+            />
           </div>
-          <div class="xh-bio">
-            hi,<Light>我是小海,也可以称我为褚喧</Light>,欢迎来到我的博客.
-            我是一个喜欢学习、喜欢生活、喜欢分享的<Light>Web前端开发者</Light>,现在的企划只有写前端,学习音乐做一首自己的歌,想要参加开源项目,正在犀牛鸟活动中摸索,希望在未来能够参与更多开源活动,也专注
-            在一些线下的公益活动,<Light>为世界更美好贡献自己的一份力量</Light>,和很多人一样,相信技术改变世界
-          </div>
-          <div class="xh-bio">
-            除此以外,我也喜欢二次元,阅读(虽然这段时间的阅读也越来越少),散步,喜欢骑行的风,写文章等,爱好很少,但是可以让我一个人非常充实的活着
-          </div>
-          <n-divider>
-            <transition name="flip" mode="out-in">
-              <n-highlight
-                :key="text"
-                :text="text"
-                :patterns="patterns"
-                :highlight-style="Nstyle"
-                @click="SocialClick"
-                @mouseenter="SocialMove"
-                @mouseleave="SocialLeave"
-              />
-            </transition>
-          </n-divider>
-          <div class="xh-social-container">
-            <n-scrollbar style="height: 100%">
-              <div class="xh-social">
-                <!-- 普通卡片 -->
-                <div class="card" v-for="item in SocialData">
-                  <Card :title="item.title" :content="item.excerpt" />
+          <div class="xh-info-text">
+            <div class="xh-name">小海</div>
+            <div class="xh-job"><Light>前端开发者</Light>-向阳花木易为春</div>
+            <div class="xh-tags">
+              <span class="xh-tag">Vue</span>
+              <span class="xh-tag">React</span>
+              <span class="xh-tag">jest</span>
+              <span class="xh-tag">Typescript</span>
+              <span class="xh-tag">Javascript</span>
+              <span class="xh-tag">CSS</span>
+              <span class="xh-tag">HTML</span>
+              <span class="xh-tag">Node</span>
+              <span class="xh-tag">Git</span>
+              <span class="xh-tag">Golang</span>
+            </div>
+            <div class="xh-bio">
+              hi,<Light>我是小海,也可以称我为褚喧</Light>,欢迎来到我的博客.
+              我是一个喜欢学习、喜欢生活、喜欢分享的<Light>Web前端开发者</Light>,现在的企划只有写前端,学习音乐做一首自己的歌,想要参加开源项目,正在犀牛鸟活动中摸索,希望在未来能够参与更多开源活动,也专注
+              在一些线下的公益活动,<Light>为世界更美好贡献自己的一份力量</Light>,和很多人一样,相信技术改变世界
+            </div>
+            <div class="xh-bio">
+              除此以外,我也喜欢二次元,阅读(虽然这段时间的阅读也越来越少),散步,喜欢骑行的风,写文章等,爱好很少,但是可以让我一个人非常充实的活着
+            </div>
+            <n-divider>
+              <transition name="flip" mode="out-in">
+                <n-highlight
+                  :key="text"
+                  :text="text"
+                  :patterns="patterns"
+                  :highlight-style="Nstyle"
+                  @click="SocialClick"
+                  @mouseenter="SocialMove"
+                  @mouseleave="SocialLeave"
+                />
+              </transition>
+            </n-divider>
+            <div class="xh-social-container">
+              <n-scrollbar style="height: 100%">
+                <div class="xh-social">
+                  <div class="card" v-for="item in SocialData">
+                    <Card :title="item.title" :content="item.excerpt" />
+                  </div>
                 </div>
-                <!-- <div class="card double-row">
-                  <Card />
-                </div> -->
-              </div>
-            </n-scrollbar>
+              </n-scrollbar>
+            </div>
           </div>
-        </div>
-      </n-scrollbar>
+        </n-scrollbar>
+      </div>
     </div>
-  </div>
-  <div class="xh-home-timeline">
-    <TimeLine />
+    <div class="xh-home-timeline">
+      <TimeLine />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 @use "../../style/index.scss" as *;
-.xh-home {
+.xh-home-layout {
   width: min(100%, 1200px);
   margin: 0 auto;
   display: grid;
@@ -127,6 +125,10 @@ const SocialLeave = () => {
   gap: clamp(20px, 3vw, 40px);
   align-items: start;
   padding: clamp(16px, 3vw, 36px);
+}
+
+.xh-home {
+  min-width: 0;
 }
 
 .xh-info-container {
@@ -254,7 +256,7 @@ const SocialLeave = () => {
 
 /* 小屏幕 (小于768px) */
 @media (max-width: 768px) {
-  .xh-home {
+  .xh-home-layout {
     grid-template-columns: 1fr;
     padding: 16px 0;
   }
@@ -335,7 +337,7 @@ const SocialLeave = () => {
 
 /* 中等屏幕 (768px-992px) */
 @media (min-width: 768px) and (max-width: 992px) {
-  .xh-home {
+  .xh-home-layout {
     grid-template-columns: minmax(0, 1fr) 250px;
   }
 }
