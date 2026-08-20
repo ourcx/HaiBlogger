@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:strict": "vue-tsc -b && vite build",
+    "build": "node ./node_modules/vite/bin/vite.js build",
+    "build:strict": "node ./node_modules/vue-tsc/bin/vue-tsc.js -b && node ./node_modules/vite/bin/vite.js build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.ts,.tsx --fix",
     "type-check": "vue-tsc --noEmit"

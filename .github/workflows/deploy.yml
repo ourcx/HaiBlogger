@@ -29,10 +29,10 @@ jobs:
 
       - name: Verify build toolchain
         run: |
-          test -x node_modules/.bin/vite
-          test -x node_modules/.bin/vue-tsc
-          node_modules/.bin/vite --version
-          node_modules/.bin/vue-tsc --version
+          test -f node_modules/vite/bin/vite.js
+          test -f node_modules/vue-tsc/bin/vue-tsc.js
+          node node_modules/vite/bin/vite.js --version
+          node node_modules/vue-tsc/bin/vue-tsc.js --version
 
       - name: Build
         run: npm run build:strict
