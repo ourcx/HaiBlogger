@@ -7,54 +7,13 @@
         <Divider>github</Divider>
         <div class="xh-projects-class__new">
           <links
-            src="https://s2.loli.net/2025/08/19/GP4Lma8gVe5ItlE.jpg"
-            name="xiaohaiyunGo"
-            description="后端"
-            onclick="window.location.href='https://github.com/ourcx/xiaohaiyunGo'"
-            style="cursor: pointer"
-          ></links>
-          <links
-            src="https://s2.loli.net/2025/06/13/SP6wneV4Zh52rKm.jpg"
-            name="xiaohaiyunHTML"
-            description="基于Vue3的网页简盘"
-            onclick="window.location.href='https://github.com/ourcx/xiaohaiyunHTML'"
-            style="cursor: pointer"
-          ></links>
-          <links
-            src="https://s2.loli.net/2025/05/29/HSaD38fFVYmiWIo.png"
-            name="feiUI"
-            description="feiUI组件库，是一个仿element-plus的组件库，以其为基础进行进一步的扩展"
-            onclick="window.location.href='https://github.com/ourcx/feiUI'"
-            style="cursor: pointer"
-          ></links>
-          <links
-            src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
-            name="cherry-markdown"
-            description="A Markdown Editor，这是我参与的第一个开源项目"
-            onclick="window.location.href='https://github.com/ourcx/cherry-markdown'"
-            style="cursor: pointer"
-          ></links>
-          <links
-            src="https://s2.loli.net/2025/03/04/tQzyHhxs76Y1EU9.jpg"
-            name="timetable"
-            description="一个校园课表小程序"
-            onclick="window.location.href='https://github.com/ourcx/timetable'"
-            style="cursor: pointer"
-          ></links>
-          <links
-            src="https://s2.loli.net/2025/03/04/tQzyHhxs76Y1EU9.jpg"
-            name="xiaohaiyunAdmin"
-            description="小海云网盘的后台管理系统，使用nextjs和ts等技术栈"
-            onclick="window.location.href='https://github.com/ourcx/xiaohaiyunAdmin'"
-            style="cursor: pointer"
-          ></links>
-          <links
-            src="https://s2.loli.net/2025/09/07/D5hwT7Pen4fHF9N.jpg"
-            name="qk"
-            description="庆快校园"
-            onclick="window.location.href='/'"
-            style="cursor: pointer"
-          ></links>
+            v-for="project in projects"
+            :key="project.name"
+            :src="project.src"
+            :name="project.name"
+            :description="project.description"
+            :href="project.url"
+          />
         </div>
       </div>
     </div>
@@ -64,6 +23,69 @@
 <script setup lang="ts">
 import Links from "@/components/Links/Links.vue";
 import Divider from "@/components/Divider/Divider.vue";
+
+const projects = [
+  {
+    src: "https://s2.loli.net/2025/08/19/GP4Lma8gVe5ItlE.jpg",
+    name: "xiaohaiyunGo",
+    description: "后端",
+    url: "https://github.com/ourcx/xiaohaiyunGo",
+  },
+  {
+    src: "https://s2.loli.net/2025/06/13/SP6wneV4Zh52rKm.jpg",
+    name: "xiaohaiyunHTML",
+    description: "基于 Vue 3 的网页网盘",
+    url: "https://github.com/ourcx/xioahaiyunHTML",
+  },
+  {
+    src: "https://s2.loli.net/2025/05/29/HSaD38fFVYmiWIo.png",
+    name: "feiUI",
+    description: "仿 Element Plus 的组件库，并在此基础上扩展。",
+    url: "https://github.com/ourcx/feiUI",
+  },
+  {
+    src: "https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg",
+    name: "cherry-markdown",
+    description: "参与的第一个开源项目，一个 Markdown 编辑器。",
+    url: "https://github.com/ourcx/cherry-markdown",
+  },
+  {
+    src: "https://s2.loli.net/2025/03/04/tQzyHhxs76Y1EU9.jpg",
+    name: "timetable",
+    description: "一个校园课表小程序。",
+    url: "https://github.com/ourcx/timetable",
+  },
+  {
+    src: "https://s2.loli.net/2025/03/04/tQzyHhxs76Y1EU9.jpg",
+    name: "xiaohaiyunAdmin",
+    description: "小海云网盘后台管理系统，使用 Next.js 和 TypeScript。",
+    url: "https://github.com/ourcx/xiaohaiyunAdmin",
+  },
+  {
+    src: "https://s2.loli.net/2025/09/07/D5hwT7Pen4fHF9N.jpg",
+    name: "qk",
+    description: "庆快校园。",
+    url: "/",
+  },
+  {
+    src: "https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg",
+    name: "codewiz",
+    description: "面向设计到代码工作流的工具实验与实现。",
+    url: "https://github.com/ourcx/codewiz",
+  },
+  {
+    src: "https://s2.loli.net/2025/06/13/SP6wneV4Zh52rKm.jpg",
+    name: "autowriting",
+    description: "使用 AI 自动生成公众号文章并发布到草稿箱的工作流工具。",
+    url: "https://github.com/ourcx/autowriting",
+  },
+  {
+    src: "https://s2.loli.net/2025/08/19/GP4Lma8gVe5ItlE.jpg",
+    name: "wyy-backend",
+    description: "用 Go 编写的仿网易云后端，配套 React 前端。",
+    url: "https://github.com/ourcx/wyy-backend",
+  },
+];
 </script>
 
 <style scoped lang="scss">

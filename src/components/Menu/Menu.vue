@@ -1,5 +1,9 @@
 <template>
-  <n-layout has-sider class="xh-menu__container">
+  <n-layout
+    has-sider
+    class="xh-menu__container"
+    :class="{ 'xh-menu__container--collapsed': collapsed }"
+  >
     <n-layout-sider
       bordered
       collapse-mode="width"
@@ -20,7 +24,6 @@
         children-field="whateverChildren"
       />
     </n-layout-sider>
-    <n-layout />
   </n-layout>
 </template>
 
@@ -216,8 +219,26 @@ const originalLabel = newOption.whateverLabel;
 @use "../../style/index.scss" as *;
 
 .xh-menu__container {
-  height: auto;
-  width: 100%;
-  margin: 0 0 16px;
+  position: sticky;
+  top: 0;
+  flex: 0 0 240px;
+  width: 240px;
+  height: 100dvh;
+  transition: width 0.2s ease, flex-basis 0.2s ease;
+}
+
+.xh-menu__container--collapsed {
+  flex-basis: 64px;
+  width: 64px;
+}
+
+@media (max-width: 768px) {
+  .xh-menu__container,
+  .xh-menu__container--collapsed {
+    position: static;
+    width: 100%;
+    height: auto;
+    flex-basis: auto;
+  }
 }
 </style>

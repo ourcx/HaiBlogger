@@ -52,17 +52,20 @@ const SocialLeave = () => {
     <div class="xh-home">
       <div class="xh-info-container">
         <n-scrollbar class="xh-home-scroll">
-          <div class="xh-avatar-container">
-            <n-avatar
-              round
-              :size="80"
-              src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
-              class="xh-avatar"
-            />
-          </div>
           <div class="xh-info-text">
-            <div class="xh-name">小海</div>
-            <div class="xh-job"><Light>前端开发者</Light>-向阳花木易为春</div>
+            <header class="xh-profile">
+              <div class="xh-profile__ornament" aria-hidden="true"></div>
+              <div class="xh-avatar-container">
+                <n-avatar
+                  round
+                  :size="80"
+                  src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
+                  class="xh-avatar"
+                />
+              </div>
+              <div class="xh-name">小海</div>
+              <div class="xh-job"><Light>前端开发者</Light>-向阳花木易为春</div>
+            </header>
             <div class="xh-tags">
               <span class="xh-tag">Vue</span>
               <span class="xh-tag">React</span>
@@ -123,7 +126,8 @@ const SocialLeave = () => {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
   gap: clamp(20px, 3vw, 40px);
-  align-items: start;
+  align-items: stretch;
+  min-height: calc(100dvh - 56px);
   padding: clamp(16px, 3vw, 36px);
 }
 
@@ -137,29 +141,86 @@ const SocialLeave = () => {
 
 .xh-home-scroll {
   max-height: calc(100dvh - 120px);
+}
 
-  .xh-avatar-container {
-    flex-shrink: 0;
-    height: auto;
-    // 居中
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.xh-profile {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 28px 20px 12px;
+  overflow: hidden;
+}
 
-    .xh-avatar {
-      border: 3px solid #f0f0f0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
+.xh-profile__ornament {
+  position: absolute;
+  top: 18px;
+  width: min(75%, 360px);
+  height: 76px;
+  border-top: 1px solid rgba(181, 30, 30, 0.24);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.xh-profile__ornament::before,
+.xh-profile__ornament::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: #b51e1e;
+  opacity: 0.6;
+  animation: profile-orbit 5s ease-in-out infinite;
+}
+
+.xh-profile__ornament::before {
+  top: -4px;
+  left: 12%;
+  width: 7px;
+  height: 7px;
+}
+
+.xh-profile__ornament::after {
+  top: 24px;
+  right: 8%;
+  width: 5px;
+  height: 5px;
+  animation-delay: -2.5s;
+}
+
+.xh-avatar-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xh-avatar {
+  border: 3px solid #f0f0f0;
+  box-shadow: 0 8px 22px rgba(181, 30, 30, 0.16);
+}
+
+@keyframes profile-orbit {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-9px);
+    opacity: 0.8;
   }
 }
 
 .xh-name {
+  margin-top: 12px;
   font-size: 1.5rem;
   font-weight: 600;
   color: #333;
 }
 
 .xh-job {
+  text-align: center;
   font-size: 1rem;
   color: #666;
   margin-bottom: 8px;
@@ -343,9 +404,12 @@ const SocialLeave = () => {
 }
 
 .xh-home-timeline {
+  align-self: center;
   min-width: 0;
-  max-height: calc(100dvh - 120px);
-  overflow: auto;
+  width: 100%;
+  max-height: calc(100dvh - 144px);
+  overflow-y: auto;
+  padding: 6px 0;
 }
 
 </style>

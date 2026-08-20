@@ -19,10 +19,24 @@ body,
 body {
   min-height: 100dvh;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 * {
   box-sizing: border-box;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.n-scrollbar-rail {
+  display: none !important;
 }
 
 a {

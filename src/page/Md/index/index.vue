@@ -21,25 +21,31 @@
           >
             <md-list :post="item" :loading="false" />
           </div>
-          <div v-else>
-            <n-result status="418" title="418 我是个杯具" description="一切尽在不言中">
+          <div v-else class="fei-MD__empty">
+            <n-result status="info" title="这一页还没有文章" :description="emptyDescription">
               <template #footer>
-                <n-button>接受真相就是这么简单</n-button>
+                <n-button @click="page = 1">回到第一页</n-button>
               </template>
             </n-result>
           </div>
         </div>
       </div>
       <div class="fei-MD__footer">
-        <n-pagination v-model:page="page" :page-count="100" /></div
+        <n-pagination
+          v-if="pageCount > 1"
+          v-model:page="page"
+          :page-count="pageCount"
+          :page-slot="5"
+        />
+        <span v-else class="fei-MD__footer-note">目前共 {{ DynamicStore.data.length }} 篇文章</span>
+      </div
     ></n-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
-import MarkdownIt from "markdown-it";
-import { NPagination, NScrollbar,NResult,NButton } from "naive-ui";
+import { ref, computed } from "vue";
+import { NPagination, NScrollbar, NResult, NButton } from "naive-ui";
 import MdList from "@/components/MD-list/MdLIst.vue";
 import type { IndexMDProps } from "./type";
 import { useDynamicStore } from "@/store";
@@ -64,8 +70,14 @@ interface BlogPost {
 
 const page = ref(1);
 const base = 5;
+const pageCount = computed(() => Math.max(1, Math.ceil(DynamicStore.data.length / base)));
 const posts = computed<BlogPost[]>(() => {
   return DynamicStore.data.slice((page.value - 1) * base, page.value * base);
+});
+const emptyDescription = computed(() => {
+  return DynamicStore.data.length
+    ? `当前只有 ${pageCount.value} 页文章，换一页看看吧。`
+    : "文章正在整理中，晚点再来看看。";
 });
 </script>
 
@@ -116,6 +128,11 @@ const posts = computed<BlogPost[]>(() => {
   padding-top: 2rem;
   margin-top: 1rem;
   border-top: 1px solid #e5e7eb;
+}
+
+.fei-MD__footer-note {
+  color: #909399;
+  font-size: 0.85rem;
 }
 
 .fei-MD__item {
