@@ -1,6 +1,6 @@
 <template>
   <div class="fei-MD__main">
-    <n-scrollbar style="height: 100vh">
+    <n-scrollbar class="fei-MD__scroll">
       <div class="fei-MD__title">
         {{ title }}
       </div>
@@ -76,16 +76,10 @@ const posts = computed<BlogPost[]>(() => {
 .fei-MD__main {
   display: flex;
   flex-direction: column;
-  height: #{$xh-height}vh; // Assuming this is 100vh or similar
-  width: #{$xh-location}vw;
-  margin: 0 auto; // Center the container
-  flex: 1;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  justify-content: center;
-  align-items: center;
+  width: min(100%, 1100px);
+  min-height: calc(100dvh - 76px);
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 36px);
 }
 
 // Page title
@@ -101,6 +95,10 @@ const posts = computed<BlogPost[]>(() => {
   flex: 1; // Allows this element to grow and fill available space
   overflow-y: auto; // Crucial for making the list scrollable
   padding: 0 1rem; // Adds some horizontal space for the scrollbar
+}
+
+.fei-MD__scroll {
+  max-height: calc(100dvh - 76px);
 }
 
 // The list itself
@@ -157,14 +155,18 @@ const posts = computed<BlogPost[]>(() => {
 
 @media (max-width: 768px) {
   .fei-MD__main {
-    padding-left: 20%;
-    width: 80%;
+    min-height: auto;
+    padding: 16px 0;
   }
 
   .fei-MD__title {
     font-size: 1.8rem;
     padding-bottom: 10px;
     margin: 1rem 0;
+  }
+
+  .fei-MD__scroll {
+    max-height: none;
   }
 
   .fei-MD__title::after {
@@ -184,8 +186,7 @@ const posts = computed<BlogPost[]>(() => {
 
 @media (max-width: 480px) {
   .fei-MD__main {
-    padding-left: 10%;
-    width: 85%;
+    padding: 12px 0;
   }
 
   .fei-MD__title {

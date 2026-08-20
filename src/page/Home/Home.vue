@@ -50,7 +50,7 @@ const SocialLeave = () => {
 <template>
   <div class="xh-home">
     <div class="xh-info-container">
-      <n-scrollbar style="height: 100vh">
+      <n-scrollbar class="xh-home-scroll">
         <div class="xh-avatar-container">
           <n-avatar
             round
@@ -112,29 +112,29 @@ const SocialLeave = () => {
       </n-scrollbar>
     </div>
   </div>
-  <!-- 右边的东西 -->
-  <div class="xh-home-right">
-  <TimeLine/>
+  <div class="xh-home-timeline">
+    <TimeLine />
   </div>
 </template>
 
 <style scoped lang="scss">
 @use "../../style/index.scss" as *;
 .xh-home {
-  height: #{$xh-height}vh;
-  width: #{$xh-width}vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  padding: 2% 20%;
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+  padding: clamp(16px, 3vw, 36px);
 }
 
 .xh-info-container {
-  flex-grow: 1;
-  display: flex;
-  gap: 8px;
-  max-height: 25%;
+  min-width: 0;
+}
+
+.xh-home-scroll {
+  max-height: calc(100dvh - 120px);
 
   .xh-avatar-container {
     flex-shrink: 0;
@@ -165,6 +165,7 @@ const SocialLeave = () => {
 
 .xh-tags {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
   justify-content: center;
@@ -191,7 +192,7 @@ const SocialLeave = () => {
 }
 /* 外层固定高度容器 */
 .xh-social-container {
-  height: 300px; /* 你想要的高度 */
+  max-height: 360px;
   width: 100%;
 }
 
@@ -215,6 +216,7 @@ const SocialLeave = () => {
   background: #fff;
   border-radius: 4px;
   padding: 12px;
+  min-width: 0;
 }
 
 /* 3D翻转效果 */
@@ -253,24 +255,16 @@ const SocialLeave = () => {
 /* 小屏幕 (小于768px) */
 @media (max-width: 768px) {
   .xh-home {
-    flex-direction: column;
-    padding: 0 15px;
-    width: calc(100% - 70px);
-    left: 70px;
-    height:80vh !important
+    grid-template-columns: 1fr;
+    padding: 16px 0;
   }
 
   .xh-info-container {
-    width: 100% !important;
-    padding-right: 0 !important;
+    width: 100%;
   }
 
-  .xh-home-right {
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    margin-top: 20px;
-    box-shadow: none !important;
+  .xh-home-timeline {
+    display: none;
   }
 
   .xh-tags {
@@ -341,39 +335,15 @@ const SocialLeave = () => {
 
 /* 中等屏幕 (768px-992px) */
 @media (min-width: 768px) and (max-width: 992px) {
-  .xh-home-right {
-    width: 250px !important;
-  }
-
-  .xh-info-container {
-    width: calc(100% - 270px) !important;
-  }
-}
-
-/* 大屏幕 (大于1200px) */
-@media (min-width: 1200px) {
   .xh-home {
-    max-width: 1400px;
-    margin: 0 auto;
+    grid-template-columns: minmax(0, 1fr) 250px;
   }
 }
 
-.xh-home-right {
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 300px; // 增加宽度，100px可能太小
-  height: 100vh; // 使用100vh而不是变量
-  z-index: 100; // 确保在顶层
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .xh-home-right {
-    display: none; // 小屏幕隐藏
-  }
+.xh-home-timeline {
+  min-width: 0;
+  max-height: calc(100dvh - 120px);
+  overflow: auto;
 }
 
 </style>

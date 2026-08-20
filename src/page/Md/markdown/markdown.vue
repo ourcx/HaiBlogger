@@ -83,17 +83,17 @@ const prevND = () => {
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: #{$xh-height}vh;
+  width: min(100%, 1100px);
+  min-height: calc(100dvh - 76px);
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 36px);
   background-color: var(--background-main);
-  position: fixed;
 }
 
 .xh-markdown-wrapper {
   width: 100%;
   max-width: 900px;
-  height: calc(100vh - 2rem);
+  min-height: calc(100dvh - 148px);
   background: var(--background-soft);
   border-radius: 16px;
   padding: 2rem;
@@ -160,13 +160,12 @@ const prevND = () => {
 
 @media (max-width: 768px) {
   .xh-markdown-container {
-    padding: 1rem;
-    width: 85%;
-    left: 15%;
+    min-height: auto;
+    padding: 16px 0;
   }
 
   .xh-markdown-wrapper {
-    height: calc(100vh - 2rem);
+    min-height: calc(100dvh - 108px);
     padding: 1.5rem;
   }
 
@@ -183,11 +182,11 @@ const prevND = () => {
 
 @media (max-width: 480px) {
   .xh-markdown-container {
-    padding: 0;
+    padding: 12px 0;
   }
 
   .xh-markdown-wrapper {
-    height: 100vh;
+    min-height: calc(100dvh - 88px);
     border-radius: 0;
     padding: 1rem;
   }

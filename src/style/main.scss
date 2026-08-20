@@ -9,27 +9,26 @@
 }
 
 .xh{
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100dvh;
     border: 10px solid #b51e1e;
-    display: flex;
     position: relative;
+    isolation: isolate;
+    padding: clamp(12px, 2vw, 28px);
 }
 
-/* 确保你的 .xh 容器具有定位上下文 */
 .xh {
-  position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 /* 线条背景容器 */
 .line-background {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* 将其放在所有内容的底层 */
+  z-index: -2; /* 将其放在所有内容的底层 */
   
   /* 创建线条效果 */
   background: 
@@ -54,7 +53,17 @@
   }
 }
 .n-config-provider{
-    display: flex;
-    z-index: 100;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 480px) {
+  .xh {
+    border-width: 6px;
+    padding: 12px;
+  }
 }
 

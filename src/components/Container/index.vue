@@ -12,43 +12,23 @@
 <style lang="scss" scoped>
 @use "../../style/index.scss" as *;
 .xh-home {
-  height: #{$xh-height}vh;
-  width: #{$xh-width}vw;
+  width: min(100%, 1200px);
+  min-height: calc(100dvh - 76px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: fixed;
-  padding: 2% 20%;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 36px);
 }
 
 .xh-info-container {
-  flex-grow: 1;
-  display: flex;
-  gap: 8px;
-  max-height: 25%;
+  width: 100%;
+  min-width: 0;
 }
 
 @media (max-width: 768px) {
   .xh-home {
-    flex-direction: column;
-    padding: 0 15px;
-    width: calc(100% - 70px);
-    left: 70px;
-    height:80vh !important
-  }
-
-  .xh-info-container {
-    width: 100% !important;
-    padding-right: 0 !important;
-  }
-
-}
-
-
-/* 中等屏幕 (768px-992px) */
-@media (min-width: 768px) and (max-width: 992px) {
-  .xh-info-container {
-    width: calc(100%) !important;
+    min-height: auto;
+    padding: 16px 0;
   }
 }
 

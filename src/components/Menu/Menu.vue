@@ -216,8 +216,8 @@ const originalLabel = newOption.whateverLabel;
 @use "../../style/index.scss" as *;
 
 .xh-menu__container {
-  height: #{$xh-height}vh; // 直接使用变量
-  width: auto;
-  margin-right: -250px;
+  height: auto;
+  width: 100%;
+  margin: 0 0 16px;
 }
 </style>

@@ -1,31 +1,28 @@
 <template>
-  <Container>
-    <div class="timeline-container">
-      <h1>文章发布记录</h1>
-      <div class="timeline-title">文章都在掘金上面</div>
-      <n-scrollbar style="min-height: 83vh">
-        <div class="timeline">
-          <div
-            v-for="(item, index) in articles"
-            :key="item.date"
-            :class="['timeline-item', index % 2 === 0 ? 'left' : 'right']"
-          >
-            <n-card class="timeline-content">
-              <h2>{{ item.title }}</h2>
-              <p class="timeline-date">{{ item.date }}</p>
-              <p>{{ item.description }}</p>
-            </n-card>
-          </div>
-        </div></n-scrollbar
-      >
-    </div>
-  </Container>
+  <div class="timeline-container">
+    <h1>文章发布记录</h1>
+    <div class="timeline-title">文章都在掘金上面</div>
+    <n-scrollbar class="timeline-scroll">
+      <div class="timeline">
+        <div
+          v-for="(item, index) in articles"
+          :key="item.date"
+          :class="['timeline-item', index % 2 === 0 ? 'left' : 'right']"
+        >
+          <n-card class="timeline-content">
+            <h2>{{ item.title }}</h2>
+            <p class="timeline-date">{{ item.date }}</p>
+            <p>{{ item.description }}</p>
+          </n-card>
+        </div>
+      </div>
+    </n-scrollbar>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { NScrollbar } from "naive-ui";
 import { NCard } from "naive-ui";
-import Container from "@/components/Container/index.vue";
 
 const articles = [
   {
@@ -65,7 +62,9 @@ $heading-color: #741616;
 
 .timeline-container {
   font-family: "Helvetica Neue", Arial, sans-serif;
+  width: min(100%, 900px);
   margin: 0 auto;
+  padding: clamp(16px, 3vw, 36px);
   color: $text-color;
 
   h1 {
@@ -73,6 +72,10 @@ $heading-color: #741616;
     font-size: 2.5rem;
     color: $heading-color;
   }
+}
+
+.timeline-scroll {
+  max-height: calc(100dvh - 190px);
 }
 
 .timeline {
@@ -181,6 +184,14 @@ $heading-color: #741616;
 }
 
 @media screen and (max-width: 768px) {
+  .timeline-container {
+    padding: 16px 0;
+  }
+
+  .timeline-scroll {
+    max-height: none;
+  }
+
   .timeline::after {
     left: 31px;
   }

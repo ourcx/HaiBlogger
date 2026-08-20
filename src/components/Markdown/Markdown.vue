@@ -38,7 +38,7 @@ onMounted(async () => {
     html: true,
     linkify: true,
     typographer: true,
-    highlight: (code, lang) => {
+    highlight: (code: string, _lang: string) => {
       return code;
     },
   });

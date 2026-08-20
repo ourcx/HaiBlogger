@@ -90,16 +90,10 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
 .xh-links {
   display: flex;
   flex-direction: column;
-  height: #{$xh-height}vh;
-  width: #{$xh-location}vw;
+  width: min(100%, 1200px);
+  min-height: calc(100dvh - 76px);
   margin: 0 auto;
-  flex: 1;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  justify-content: center;
-  align-items: center;
+  padding: clamp(16px, 3vw, 36px);
 }
 
 // 优化后的样式
@@ -108,7 +102,7 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
   flex-direction: column;
   align-items: center; // 水平居中所有子元素
   width: 100%;
-  height: 100%;
+  min-width: 0;
   gap: 10px; // 使用 gap 设置子元素之间的间距
   box-sizing: border-box;
 
@@ -128,10 +122,6 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
 }
 
 .xh-links {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 25px 20px;
-
   &__main {
     border-radius: 12px;
 
@@ -163,7 +153,7 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
 
     &--friends {
       display: grid;
-      width: calc(100% - 40px);
+      width: 100%;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 25px;
     }
@@ -172,8 +162,8 @@ friendLinks.value = [...friendLinks.value].sort(() => Math.random() - 0.5);
 
 @media (max-width: 768px) {
   .xh-links {
-    padding: 20px 15px;
-    padding-left: 10vw;
+    min-height: auto;
+    padding: 16px 0;
 
     &__main {
       padding: 25px 15px;

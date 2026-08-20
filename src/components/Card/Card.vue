@@ -24,7 +24,9 @@ const props = defineProps({
 </script>
 <style scoped lang="scss">
 .n-card {
-  max-width: 300px;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
 }
 .markdown-renderer :deep(h1) {
   font-size: 1.8rem;
