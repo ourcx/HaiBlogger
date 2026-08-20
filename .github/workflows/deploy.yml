@@ -11,6 +11,10 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: development
+      NPM_CONFIG_PRODUCTION: "false"
+      NPM_CONFIG_OMIT: ""
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
@@ -23,7 +27,14 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci --include=dev
+        run: npm ci --include=dev --ignore-scripts=false
+
+      - name: Verify build toolchain
+        run: |
+          test -x node_modules/.bin/vite
+          test -x node_modules/.bin/vue-tsc
+          node_modules/.bin/vite --version
+          node_modules/.bin/vue-tsc --version
 
       - name: Build
         run: npm run build:strict
