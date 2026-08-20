@@ -15,11 +15,18 @@
     "@types/node": "^24.0.14",
     "@types/markdown-it": "^14.1.2",
     "@vicons/ionicons5": "^0.13.0",
+    "@vitejs/plugin-vue": "^5.0.0",
     "markdown-it": "^14.1.0",
     "naive-ui": "2.42.0",
     "pinia": "^3.0.3",
+    "sass": "^1.89.2",
+    "typescript": "~5.8.3",
+    "vfonts": "^0.0.3",
+    "vite": "^5.0.0",
+    "vite-plugin-vue-devtools": "^7.0.0",
     "vue": "^3.5.17",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-tsc": "^2.2.12"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
@@ -28,17 +35,10 @@
     "@volar/vue-language-plugin-pug": "^1.6.5",
     "@volar/vue-language-server": "^1.6.5",
     "@vue/runtime-core": "^3.5.17",
-    "vite-plugin-vue-devtools": "^7.0.0",
     "@vue/tsconfig": "^0.7.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-typescript": "^18.0.0",
-    "eslint-plugin-vue": "^10.3.0",
-    "sass": "^1.89.2",
-    "typescript": "~5.8.3",
-    "vfonts": "^0.0.3",
-    "vite": "^5.0.0",
-    "@vitejs/plugin-vue": "^5.0.0",
-    "vue-tsc": "^2.2.12"
+    "eslint-plugin-vue": "^10.3.0"
   },
   "volta": {
     "extensions": [
