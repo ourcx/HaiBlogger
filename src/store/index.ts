@@ -1,66 +1,41 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import { extractFrontmatter } from '@/utils/extractFrontmatter'
-import MarkdownIt from 'markdown-it'
-import { cleanMarkdown } from '@/utils/cleanMarkdown'
-import { extractGlobstarMatch } from '@/utils/glob'
-type DataItem = {
-  id?: string
-  title: string
-  date?: string
-  excerpt?: string
-  content: string
-  htmlContent?: string
-  links?: string
-}
+import { api, type Article, type ArticleSummary } from '@/services/api'
 
-type DataArray = DataItem[]
-// 示例 store
 export const useDynamicStore = defineStore('Dynamic', {
-  state: (): { data: DataArray; theme: 'light'|'dark' } => ({
-    data: [
-      {
-        title: '为什么写博客',
-        content:
-          '博客是我们在互联网上的一块天地，相比于微博，小红书等，我们更希望是一个开放、分享、交流学习的地方。可以构建自己喜欢的事物和风格，创建自己的小世界。也能去分享心得，创造价值。',
-        links: ''
-      }
-    ],
-    theme: 'light' // 默认主题
+  state: (): {
+    data: ArticleSummary[]
+    articleCache: Record<string, Article>
+    loading: boolean
+    error: string
+    theme: 'light' | 'dark'
+  } => ({
+    data: [],
+    articleCache: {},
+    loading: false,
+    error: '',
+    theme: (localStorage.getItem('hai-theme') as 'light' | 'dark') || 'light',
   }),
-  getters: {
-    // doubleCount: (state) => state.counter * 2
-  },
   actions: {
-    initData () {
-      const mdParser = new MarkdownIt()
-      const posts = ref<DataArray>([])
-      const mdModules = import.meta.glob('/src/blog/**/*.md', {
-        eager: true,
-        query: '?raw' // 避免特殊字符问题
-      })
-      console.log(mdModules)
-      posts.value = Object.entries(mdModules).map(([path, module]: any) => {
-        let fileName = decodeURIComponent(path.split('/').pop() || '')
-        const rawContent = cleanMarkdown(module.default)
-        const frontmatter = extractFrontmatter(rawContent)
-        const htmlContent = mdParser.render(
-          rawContent.replace(/^---[\s\S]*?---/, '')
-        )
-        const MdStr = extractGlobstarMatch('/src/blog/**/*.md', path)
-        if (MdStr) {
-          fileName = MdStr + fileName
-        }
-        return {
-          id: fileName,
-          title: fileName,
-          date: frontmatter.date || '未知日期',
-          excerpt: frontmatter.excerpt || htmlContent.substring(0, 100) + '...',
-          content: module.default
-        }
-      })
-      this.data = posts.value.sort((a, b) => a.title.localeCompare(b.title))
-      console.log(posts.value)
-    }
-  }
+    async initData() {
+      if (this.data.length || this.loading) return
+      this.loading = true
+      this.error = ''
+      try {
+        this.data = await api.articles()
+      } catch (error) {
+        this.error = error instanceof Error ? error.message : '文章加载失败'
+      } finally {
+        this.loading = false
+      }
+    },
+    async getArticle(id: string) {
+      if (!this.articleCache[id]) this.articleCache[id] = await api.article(id)
+      return this.articleCache[id]
+    },
+    toggleTheme() {
+      this.theme = this.theme === 'light' ? 'dark' : 'light'
+      localStorage.setItem('hai-theme', this.theme)
+      document.documentElement.dataset.theme = this.theme
+    },
+  },
 })

@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component:()=>import('@/page/Md/index/index.vue')
   },
   {
-    path: '/markdown/:id', // 添加动态参数
+    path: '/markdown/:id(.*)',
     name: 'markdown',
     component: () => import('@/page/Md/markdown/markdown.vue')
   },
@@ -35,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/time',
     name: 'time',
     component: () => import('@/page/TimeLine/index.vue')
+  },
+  {
+    path: '/explore',
+    name: 'explore',
+    component: () => import('@/page/Explore/index.vue')
   },
   // 确保所有菜单项都有对应的路由
   {

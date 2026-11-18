@@ -1,244 +1,99 @@
 <template>
-  <n-layout
-    has-sider
-    class="xh-menu__container"
-    :class="{ 'xh-menu__container--collapsed': collapsed }"
-  >
-    <n-layout-sider
-      bordered
-      collapse-mode="width"
-      :collapsed-width="64"
-      :width="240"
-      :collapsed="collapsed"
-      show-trigger
-      @collapse="collapsed = true"
-      @expand="collapsed = false"
-    >
-      <n-menu
-        :collapsed="collapsed"
-        :collapsed-width="64"
-        :collapsed-icon-size="22"
-        :options="processedMenuOptions"
-        key-field="whateverKey"
-        label-field="whateverLabel"
-        children-field="whateverChildren"
-      />
-    </n-layout-sider>
-  </n-layout>
+  <aside class="site-nav" :class="{ 'site-nav--open': !collapsed }">
+    <div class="site-nav__brand">
+      <span class="site-nav__mark">海</span>
+      <span v-if="!collapsed" class="site-nav__name">小海的角落</span>
+    </div>
+
+    <nav class="site-nav__links" aria-label="主导航">
+      <router-link
+        v-for="item in navItems"
+        :key="item.route"
+        :to="{ name: item.route }"
+        class="site-nav__link"
+        :title="item.label"
+      >
+        <n-icon :component="item.icon" />
+        <span v-if="!collapsed">{{ item.label }}</span>
+      </router-link>
+    </nav>
+
+    <div class="site-nav__footer">
+      <n-button quaternary circle :aria-label="themeLabel" :title="themeLabel" @click="store.toggleTheme">
+        <template #icon><n-icon :component="store.theme === 'light' ? MoonOutline : SunnyOutline" /></template>
+      </n-button>
+      <n-button quaternary circle :aria-label="collapsed ? '展开导航' : '收起导航'" @click="collapsed = !collapsed">
+        <template #icon><n-icon :component="collapsed ? ChevronForward : ChevronBack" /></template>
+      </n-button>
+    </div>
+  </aside>
 </template>
 
 <script setup lang="ts">
-import { ref, h, computed,onMounted,reactive } from "vue";
-import { NLayout, NLayoutSider, NMenu, NIcon } from "naive-ui";
-import type { MenuOption } from "naive-ui";
-import type { Component } from "vue";
-import { RouterLink, useRouter } from "vue-router";
+import { computed, ref } from 'vue'
+import { NButton, NIcon } from 'naive-ui'
 import {
-  BookOutline as BookIcon,
-  PersonOutline as PersonIcon,
-  WineOutline as WineIcon,
-  HomeOutline as HomeIcon,
-  BriefcaseOutline as ProjectIcon,
-  LinkOutline as LinkIcon,
-  InformationCircleOutline as AboutIcon,
-  SettingsOutline as SettingIcon
-} from "@vicons/ionicons5";
-import {type RouteParamsRaw } from "vue-router";
-import type { VNodeChild } from "vue";
-import { useDynamicStore } from '../../store/index';
+  BookOutline,
+  BriefcaseOutline,
+  ChevronBack,
+  ChevronForward,
+  CompassOutline,
+  HomeOutline,
+  InformationCircleOutline,
+  LinkOutline,
+  MoonOutline,
+  SunnyOutline,
+  TimeOutline,
+} from '@vicons/ionicons5'
+import { useDynamicStore } from '@/store'
 
-
-type RouteConfig = {
-  whateverLabel: string;
-  whateverKey: string;
-  route: "markdown";
-  params: {
-    id: string;
-  };
-  whateverChildren?: RouteConfig[];
-};
-const articlesChildren = ref<RouteConfig[]>([])
-const router = useRouter();
-const collapsed = ref(true);
-const DynamicStore = useDynamicStore();
-const renderIcon = (icon: Component) => {
-  return () => h(NIcon, null, { default: () => h(icon) });
-};
-
-const menuOptions=computed<MenuOption[]>(() => [
-  {
-    whateverLabel: "首页",
-    whateverKey: "home",
-    icon: renderIcon(HomeIcon),
-    route: "home"
-  },
-  {
-    whateverLabel: "项目",
-    whateverKey: "projects",
-    icon: renderIcon(ProjectIcon),
-    route: "projects"
-  },
-  {
-    whateverLabel: "友链",
-    whateverKey: "links",
-    icon: renderIcon(LinkIcon),
-    route: "links"
-  },
-  {
-    whateverLabel: "关于",
-    whateverKey: "about",
-    icon: renderIcon(AboutIcon),
-    route: "about"
-  },
-  {
-    whateverLabel: "文章",
-    whateverKey: "articles",
-    icon: renderIcon(BookIcon),
-    whateverChildren: articlesChildren.value
-  },
-  {
-    whateverLabel: "归档",
-    whateverKey: "markdown",
-    icon: renderIcon(WineIcon),
-    route: "markdownIndex",
-  },
-  {
-    whateverLabel: "时间线",
-    whateverKey: "timeline",
-    icon: renderIcon(SettingIcon),
-    route: "time"
-
-  }
-]);
-
-onMounted(() => {
-  const articles: any[] = [];
-
-  articlesChildren.value = DynamicStore.data.map(item => {
-    if (item.id?.includes("/")) {
-      const [prev, next] = item.id.split("/");
-      let found = false;
-
-      for (let i = 0; i < articles.length; i++) {
-        if (articles[i].whateverLabel === prev) {
-          articles[i].whateverChildren?.push({
-            whateverLabel: next,
-            whateverKey: item.id,
-            route: "markdown",
-            params: { id: item.id }
-          });
-          found = true;
-          break;
-        }
-      }
-
-      if (!found) {
-        articles.push({
-          whateverLabel: prev,
-          whateverKey: prev,
-          route: "markdown",
-          params: { id: prev },
-          whateverChildren: [{
-            whateverLabel: next,
-            whateverKey: item.id,
-            route: "markdown",
-            params: { id: item.id }
-          }]
-        });
-      }
-
-      return null; // 有斜杠的文章不直接显示在主列表
-    }
-
-    return {
-      whateverLabel: item.title,
-      whateverKey: item.id,
-      route: "markdown",
-      params: { id: item.id }
-    };
-  }).filter(Boolean) as RouteConfig[]; // 过滤掉null值并断言类型
-
-  articlesChildren.value.push(...articles);
-  console.log(articlesChildren.value);
-});
-
-// 处理菜单选项，添加路由跳转功能
-const processedMenuOptions = computed<MenuOption[]>(() => {
-  const processOptions = (options: MenuOption[]): MenuOption[] => {
-    return options.map(option => {
-      // 创建新选项对象，保留原始属性
-      const newOption: MenuOption = { ...option };
-
-      // 添加路由跳转功能
-      if (newOption.route) {
-        // 保存原始标签
-        if(!newOption.whateverChildren){
-const originalLabel = newOption.whateverLabel;
-
-        // 创建路由链接组件
-        newOption.whateverLabel = () => h(
-          RouterLink,
-          {
-            to: newOption.params
-              ? {
-                  name: newOption.route as string,
-                  params: newOption.params as RouteParamsRaw
-                }
-              : { name: newOption.route as string }
-          },
-          { default: () => originalLabel as string }
-        );
-
-        // 添加点击事件处理
-        newOption.onClick = () => {
-          if (newOption.params) {
-            router.push({
-              name: newOption.route as string,
-              params: newOption.params as RouteParamsRaw
-            });
-          } else {
-            router.push({ name: newOption.route as string });
-          }
-        };
-      }
-        }
-      // 递归处理子菜单
-      if (Array.isArray(newOption.whateverChildren)) {
-        newOption.whateverChildren = processOptions(newOption.whateverChildren);
-      }
-
-      return newOption;
-    });
-  };
-
-  return processOptions(menuOptions.value);
-});
+const collapsed = ref(true)
+const store = useDynamicStore()
+const themeLabel = computed(() => store.theme === 'light' ? '切换到深色模式' : '切换到浅色模式')
+const navItems = [
+  { label: '首页', route: 'home', icon: HomeOutline },
+  { label: '文章', route: 'markdownIndex', icon: BookOutline },
+  { label: '探索', route: 'explore', icon: CompassOutline },
+  { label: '项目', route: 'projects', icon: BriefcaseOutline },
+  { label: '时间线', route: 'time', icon: TimeOutline },
+  { label: '友链', route: 'links', icon: LinkOutline },
+  { label: '关于', route: 'about', icon: InformationCircleOutline },
+]
 </script>
 
 <style scoped lang="scss">
-@use "../../style/index.scss" as *;
-
-.xh-menu__container {
+.site-nav {
   position: sticky;
   top: 0;
-  flex: 0 0 240px;
-  width: 240px;
+  z-index: 20;
+  display: flex;
+  flex: 0 0 72px;
+  flex-direction: column;
+  width: 72px;
   height: 100dvh;
-  transition: width 0.2s ease, flex-basis 0.2s ease;
+  padding: 18px 10px;
+  border-right: 1px solid rgba(181, 30, 30, 0.14);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(18px);
+  transition: width 0.16s ease, flex-basis 0.16s ease;
 }
 
-.xh-menu__container--collapsed {
-  flex-basis: 64px;
-  width: 64px;
-}
+.site-nav--open { width: 220px; flex-basis: 220px; }
+.site-nav__brand { display: flex; min-height: 48px; align-items: center; gap: 12px; padding: 0 8px 18px; white-space: nowrap; }
+.site-nav__mark { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border-radius: 4px; color: white; font-weight: 700; background: #b51e1e; box-shadow: 0 5px 14px rgba(181, 30, 30, 0.18); }
+.site-nav__name { font-size: 1rem; font-weight: 650; color: var(--text-main); }
+.site-nav__links { display: flex; flex: 1; flex-direction: column; gap: 6px; }
+.site-nav__link { display: flex; min-height: 46px; align-items: center; gap: 13px; padding: 0 14px; border-radius: 4px; color: var(--text-soft); font-size: 0.95rem; text-decoration: none; white-space: nowrap; transition: color 0.14s ease, background 0.14s ease, transform 0.14s ease; }
+.site-nav__link .n-icon { flex: 0 0 auto; font-size: 21px; }
+.site-nav__link:hover { color: #b51e1e; background: rgba(181, 30, 30, 0.07); transform: translateX(2px); }
+.site-nav__link.router-link-active { color: #b51e1e; background: rgba(181, 30, 30, 0.1); }
+.site-nav__footer { display: flex; justify-content: center; gap: 4px; padding-top: 12px; border-top: 1px solid var(--border-soft); }
 
 @media (max-width: 768px) {
-  .xh-menu__container,
-  .xh-menu__container--collapsed {
-    position: static;
-    width: 100%;
-    height: auto;
-    flex-basis: auto;
-  }
+  .site-nav, .site-nav--open { position: fixed; inset: auto 10px 10px; z-index: 50; width: auto; height: 62px; padding: 7px; flex-direction: row; border: 1px solid var(--border-soft); border-radius: 6px; box-shadow: 0 8px 24px rgba(22, 22, 24, 0.14); }
+  .site-nav__brand, .site-nav__footer { display: none; }
+  .site-nav__links { flex-direction: row; justify-content: space-around; overflow-x: auto; }
+  .site-nav__link { min-width: 44px; min-height: 46px; justify-content: center; padding: 0 11px; }
+  .site-nav__link span { display: none; }
 }
 </style>

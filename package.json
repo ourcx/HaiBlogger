@@ -4,10 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node server/dev.mjs",
+    "dev:web": "vite",
+    "dev:api": "node --watch server/index.mjs",
     "build": "vite build",
     "build:strict": "vue-tsc -b && vite build",
+    "migrate": "node server/migrate.mjs",
     "preview": "vite preview",
+    "start": "node server/index.mjs",
     "lint": "eslint . --ext .vue,.js,.jsx,.ts,.tsx --fix",
     "type-check": "vue-tsc --noEmit"
   },

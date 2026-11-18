@@ -1,226 +1,69 @@
 <template>
-  <div class="fei-MD__main">
-    <n-scrollbar class="fei-MD__scroll">
-      <div class="fei-MD__title">
-        {{ title }}
+  <section class="archive-page">
+    <header class="archive-header">
+      <div><h1>文章归档</h1><p>技术笔记，也有一些生活记录。</p></div>
+      <n-input v-model:value="query" clearable placeholder="搜索标题、分类或内容摘要" aria-label="搜索文章">
+        <template #prefix><n-icon :component="SearchOutline" /></template>
+      </n-input>
+    </header>
+
+    <div class="archive-filters" aria-label="文章分类">
+      <button v-for="item in categories" :key="item" :class="{ active: category === item }" @click="category = item">{{ item }}</button>
+    </div>
+
+    <n-spin :show="store.loading">
+      <div v-if="visiblePosts.length" class="article-grid">
+        <router-link v-for="post in visiblePosts" :key="post.id" :to="{ name: 'markdown', params: { id: post.id } }" class="article-card">
+          <div class="article-card__top"><span>{{ post.category }}</span><time>{{ post.publishedAt }}</time></div>
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.excerpt }}</p>
+          <span class="article-card__link">继续阅读 <span>↗</span></span>
+        </router-link>
       </div>
-      <div class="fei-MD__title--subtitle">
-        <div class="fei-MD__time">{{ time }}</div>
-        <div class="fei-MD__time--separator">|</div>
-        <div class="fei-MD__time--author">小海</div>
-        <div class="fei-MD__time--separator">|</div>
-        <div class="fei-MD__time--tag">生活日常</div>
-      </div>
-      <div class="fei-MD__body">
-        <div class="fei-MD__list">
-          <div
-            class="fei-MD__item"
-            v-for="item in posts"
-            :key="item.id"
-            v-if="posts.length > 0"
-          >
-            <md-list :post="item" :loading="false" />
-          </div>
-          <div v-else class="fei-MD__empty">
-            <n-result status="info" title="这一页还没有文章" :description="emptyDescription">
-              <template #footer>
-                <n-button @click="page = 1">回到第一页</n-button>
-              </template>
-            </n-result>
-          </div>
-        </div>
-      </div>
-      <div class="fei-MD__footer">
-        <n-pagination
-          v-if="pageCount > 1"
-          v-model:page="page"
-          :page-count="pageCount"
-          :page-slot="5"
-        />
-        <span v-else class="fei-MD__footer-note">目前共 {{ DynamicStore.data.length }} 篇文章</span>
-      </div
-    ></n-scrollbar>
-  </div>
+      <n-empty v-else-if="!store.loading" :description="store.error || '没有找到匹配的文章'" />
+    </n-spin>
+  </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { NPagination, NScrollbar, NResult, NButton } from "naive-ui";
-import MdList from "@/components/MD-list/MdLIst.vue";
-import type { IndexMDProps } from "./type";
-import { useDynamicStore } from "@/store";
-import { extractFrontmatter } from "@/utils/extractFrontmatter";
+import { computed, ref } from 'vue'
+import { NEmpty, NIcon, NInput, NSpin } from 'naive-ui'
+import { SearchOutline } from '@vicons/ionicons5'
+import { useDynamicStore } from '@/store'
 
-const DynamicStore = useDynamicStore();
-const props = withDefaults(defineProps<IndexMDProps>(), {
-  title: "小海的笔记项目",
-  time: new Date().toLocaleDateString(),
-});
-
-// 定义文章类型
-interface BlogPost {
-  id?: string;
-  title: string;
-  date?: string;
-  excerpt?: string;
-  content: string;
-  htmlContent?: string;
-  links?: string;
-}
-
-const page = ref(1);
-const base = 5;
-const pageCount = computed(() => Math.max(1, Math.ceil(DynamicStore.data.length / base)));
-const posts = computed<BlogPost[]>(() => {
-  return DynamicStore.data.slice((page.value - 1) * base, page.value * base);
-});
-const emptyDescription = computed(() => {
-  return DynamicStore.data.length
-    ? `当前只有 ${pageCount.value} 页文章，换一页看看吧。`
-    : "文章正在整理中，晚点再来看看。";
-});
+const store = useDynamicStore()
+const query = ref('')
+const category = ref('全部')
+store.initData()
+const categories = computed(() => ['全部', ...new Set(store.data.map((item) => item.category))])
+const visiblePosts = computed(() => {
+  const keyword = query.value.trim().toLowerCase()
+  return store.data.filter((post) => {
+    const inCategory = category.value === '全部' || post.category === category.value
+    const text = `${post.title} ${post.category} ${post.excerpt}`.toLowerCase()
+    return inCategory && (!keyword || text.includes(keyword))
+  })
+})
 </script>
 
-<style scoped lang="scss">
-@use "../../../style/index.scss" as *;
-
-// Main container for the entire view
-.fei-MD__main {
-  display: flex;
-  flex-direction: column;
-  width: min(100%, 1100px);
-  min-height: calc(100dvh - 76px);
-  margin: 0 auto;
-  padding: clamp(16px, 3vw, 36px);
-}
-
-// Page title
-.fei-MD__title {
-  flex-shrink: 0; // Prevent the title from shrinking
-  font-weight: bold;
-  text-align: center;
-  font-size: 40px;
-  color: #{$primary-color};
-}
-
-.fei-MD__body {
-  flex: 1; // Allows this element to grow and fill available space
-  overflow-y: auto; // Crucial for making the list scrollable
-  padding: 0 1rem; // Adds some horizontal space for the scrollbar
-}
-
-.fei-MD__scroll {
-  max-height: calc(100dvh - 76px);
-}
-
-// The list itself
-.fei-MD__list {
-  display: flex;
-  flex-direction: column;
-  // Use 'gap' here to create space BETWEEN items
-}
-
-// Footer for pagination
-.fei-MD__footer {
-  flex-shrink: 0; // Prevent the footer from shrinking
-  display: flex;
-  justify-content: center;
-  padding-top: 2rem;
-  margin-top: 1rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.fei-MD__footer-note {
-  color: #909399;
-  font-size: 0.85rem;
-}
-
-.fei-MD__item {
-  display: flex;
-  flex-direction: column;
-  height: auto;
-}
-
-.fei-MD__title--subtitle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  width: 100%;
-  font-size: 16px;
-  color: #6b7280; // 中性灰色
-  margin-top: 10px;
-  gap: 10px; // 使用 gap 控制间距
-}
-
-@media (max-width: 1200px) {
-  .fei-MD__list {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
-}
-
-@media (max-width: 992px) {
-  .fei-MD__title {
-    font-size: 2.2rem;
-  }
-
-  .fei-MD__list {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .fei-MD__main {
-    min-height: auto;
-    padding: 16px 0;
-  }
-
-  .fei-MD__title {
-    font-size: 1.8rem;
-    padding-bottom: 10px;
-    margin: 1rem 0;
-  }
-
-  .fei-MD__scroll {
-    max-height: none;
-  }
-
-  .fei-MD__title::after {
-    width: 60px;
-    height: 2px;
-  }
-
-  .fei-MD__list {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .fei-MD__footer {
-    padding: 20px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .fei-MD__main {
-    padding: 12px 0;
-  }
-
-  .fei-MD__title {
-    font-size: 1.6rem;
-  }
-
-  .fei-MD__item {
-    margin: 0 -10px;
-  }
-
-  .fei-MD__footer {
-    overflow-x: auto;
-    padding: 15px 5px;
-  }
-
-  .fei-MD__footer .n-pagination {
-    transform: scale(0.9);
-  }
-}
+<style scoped>
+.archive-page { width: min(100%, 1120px); min-height: 100dvh; margin: 0 auto; padding: clamp(28px, 5vw, 72px); }
+.archive-header { display: grid; grid-template-columns: 1fr minmax(260px, 360px); align-items: end; gap: 40px; margin-bottom: 30px; }
+.eyebrow { color: #b51e1e; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.17em; }
+.archive-header h1 { margin: 8px 0 10px; font-size: clamp(2.4rem, 6vw, 4.5rem); line-height: 1; }
+.archive-header p { max-width: 600px; margin: 0; color: var(--text-soft); font-size: 1rem; line-height: 1.7; }
+.archive-filters { display: flex; gap: 8px; margin-bottom: 26px; overflow-x: auto; }
+.archive-filters button { padding: 7px 14px; border: 1px solid var(--border-soft); border-radius: 3px; color: var(--text-soft); background: var(--surface); cursor: pointer; white-space: nowrap; transition: color .14s ease, border-color .14s ease, background .14s ease; }
+.archive-filters button.active { border-color: #b51e1e; color: white; background: #b51e1e; }
+.article-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.article-card { display: flex; min-height: 260px; flex-direction: column; padding: 24px; border: 1px solid var(--border-soft); border-radius: 6px; color: inherit; background: color-mix(in srgb, var(--surface) 94%, transparent); text-decoration: none; transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; }
+.article-card:hover { border-color: rgba(181, 30, 30, 0.38); box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+.article-card__top { display: flex; justify-content: space-between; color: var(--text-soft); font-size: 0.78rem; }
+.article-card__top span { color: #b51e1e; }
+.article-card h2 { margin: 24px 0 12px; font-size: 1.4rem; line-height: 1.35; }
+.article-card p { display: -webkit-box; margin: 0; overflow: hidden; color: var(--text-soft); line-height: 1.7; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.article-card__link { margin-top: auto; padding-top: 20px; color: #b51e1e; font-size: 0.9rem; }
+.article-card__link span { display: inline-block; transition: transform 0.2s ease; }
+.article-card:hover .article-card__link span { transform: translate(3px, -3px); }
+@media (max-width: 720px) { .archive-page { padding: 28px 8px; } .archive-header { grid-template-columns: 1fr; gap: 22px; } .article-grid { grid-template-columns: 1fr; } }
 </style>

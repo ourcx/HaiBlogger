@@ -1,415 +1,100 @@
-<script setup lang="ts">
-// 明确导入需要使用的组件
-import { NAvatar, NDivider, NHighlight, NScrollbar } from "naive-ui";
-import { GitBranch, LogoTwitter, MailOutline } from "@vicons/ionicons5";
-import { ref, computed } from "vue";
-import { useThemeVars } from "naive-ui";
-import Card from "@/components/Card/Card.vue";
-import { useDynamicStore } from "@/store";
-import TimeLine from "@/components/TImeLine/TimeLine.vue";
-
-
-const dynamicStore = useDynamicStore();
-const themeVars = useThemeVars();
-const text = ref("近期动态");
-const patterns = ref(["近期动态", "随笔"]);
-const Nstyle = ref({
-  padding: "0 6px",
-  borderRadius: themeVars.value.borderRadius,
-  display: "inline-block",
-  color: themeVars.value.baseColor,
-  background: themeVars.value.primaryColor,
-  transition: "all .3s ease-in-out",
-  cursor: "pointer",
-});
-
-const SocialIndex = ref<1 | 2 | 3 | 4 | 5>(1);
-const SocialData = computed(() => {
-  if (SocialIndex.value === 1) {
-    return dynamicStore.data;
-  } else if (SocialIndex.value === 2) {
-    return [{ title: "为什么写博客", content: "content", links: "" }];
-  }
-});
-const SocialClick = () => {
-  SocialIndex.value++;
-  text.value = patterns.value[SocialIndex.value - 1];
-  if (SocialIndex.value > 5) {
-    SocialIndex.value = 1;
-  }
-};
-
-const SocialMove = () => {
-  Nstyle.value.background = themeVars.value.primaryColorSuppl;
-};
-const SocialLeave = () => {
-  Nstyle.value.background = themeVars.value.primaryColor;
-};
-</script>
-
 <template>
-  <div class="xh-home-layout">
-    <div class="xh-home">
-      <div class="xh-info-container">
-        <n-scrollbar class="xh-home-scroll">
-          <div class="xh-info-text">
-            <header class="xh-profile">
-              <div class="xh-profile__ornament" aria-hidden="true"></div>
-              <div class="xh-avatar-container">
-                <n-avatar
-                  round
-                  :size="80"
-                  src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg"
-                  class="xh-avatar"
-                />
-              </div>
-              <div class="xh-name">小海</div>
-              <div class="xh-job"><Light>前端开发者</Light>-向阳花木易为春</div>
-            </header>
-            <div class="xh-tags">
-              <span class="xh-tag">Vue</span>
-              <span class="xh-tag">React</span>
-              <span class="xh-tag">jest</span>
-              <span class="xh-tag">Typescript</span>
-              <span class="xh-tag">Javascript</span>
-              <span class="xh-tag">CSS</span>
-              <span class="xh-tag">HTML</span>
-              <span class="xh-tag">Node</span>
-              <span class="xh-tag">Git</span>
-              <span class="xh-tag">Golang</span>
-            </div>
-            <div class="xh-bio">
-              hi,<Light>我是小海,也可以称我为褚喧</Light>,欢迎来到我的博客.
-              我是一个喜欢学习、喜欢生活、喜欢分享的<Light>Web前端开发者</Light>,现在的企划只有写前端,学习音乐做一首自己的歌,想要参加开源项目,正在犀牛鸟活动中摸索,希望在未来能够参与更多开源活动,也专注
-              在一些线下的公益活动,<Light>为世界更美好贡献自己的一份力量</Light>,和很多人一样,相信技术改变世界
-            </div>
-            <div class="xh-bio">
-              除此以外,我也喜欢二次元,阅读(虽然这段时间的阅读也越来越少),散步,喜欢骑行的风,写文章等,爱好很少,但是可以让我一个人非常充实的活着
-            </div>
-            <n-divider>
-              <transition name="flip" mode="out-in">
-                <n-highlight
-                  :key="text"
-                  :text="text"
-                  :patterns="patterns"
-                  :highlight-style="Nstyle"
-                  @click="SocialClick"
-                  @mouseenter="SocialMove"
-                  @mouseleave="SocialLeave"
-                />
-              </transition>
-            </n-divider>
-            <div class="xh-social-container">
-              <n-scrollbar style="height: 100%">
-                <div class="xh-social">
-                  <div class="card" v-for="item in SocialData">
-                    <Card :title="item.title" :content="item.excerpt" />
-                  </div>
-                </div>
-              </n-scrollbar>
-            </div>
-          </div>
-        </n-scrollbar>
+  <div class="home-page">
+    <section class="hero">
+      <div class="hero__copy">
+        <span class="eyebrow">小海的角落</span>
+        <h1>你好，我是小海。<br><em>这里是我的博客。</em></h1>
+        <p>前端开发者。平时写技术、做开源，也记录骑行、阅读和生活。</p>
+        <div class="hero__actions">
+          <n-button type="primary" size="large" @click="$router.push({ name: 'markdownIndex' })">看文章</n-button>
+          <n-button secondary size="large" @click="$router.push({ name: 'explore' })">逛逛探索页</n-button>
+        </div>
       </div>
-    </div>
-    <div class="xh-home-timeline">
-      <TimeLine />
-    </div>
+      <div class="hero__orbit" aria-hidden="true">
+        <div class="orbit orbit--outer"><i></i></div>
+        <div class="orbit orbit--inner"><i></i></div>
+        <div class="hero__avatar"><n-avatar round :size="112" src="https://s2.loli.net/2025/02/02/ELbK6urJqYvgBPj.jpg" /></div>
+        <span class="hero__signal">你好，世界</span>
+      </div>
+    </section>
+
+    <section class="signal-strip" aria-label="站点统计">
+      <div><strong>{{ stats.articles }}</strong><span>篇文章</span></div>
+      <div><strong>{{ stats.totalUv }}</strong><span>访客</span></div>
+      <div><strong>{{ stats.pageViews }}</strong><span>浏览</span></div>
+      <div><strong>{{ stats.comments }}</strong><span>评论</span></div>
+    </section>
+
+    <section class="latest">
+      <div class="section-heading"><h2>最近写的</h2><router-link :to="{ name: 'markdownIndex' }">全部文章 →</router-link></div>
+      <div class="latest__grid">
+        <router-link v-for="(post, index) in recentPosts" :key="post.id" :to="{ name: 'markdown', params: { id: post.id } }" class="post-card" :class="{ 'post-card--lead': index === 0 }">
+          <span>{{ post.category }} · {{ post.publishedAt }}</span>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.excerpt }}</p>
+          <i>0{{ index + 1 }}</i>
+        </router-link>
+      </div>
+    </section>
+
+    <router-link :to="{ name: 'explore' }" class="cosmos-teaser">
+      <div><span class="eyebrow">宇宙尺度</span><h2>旅行者一号现在离我们多远？</h2><p>还有几个把宇宙尺度换算成日常距离的小工具。</p></div>
+      <div class="cosmos-teaser__arrow">↗</div>
+    </router-link>
   </div>
 </template>
 
-<style scoped lang="scss">
-@use "../../style/index.scss" as *;
-.xh-home-layout {
-  width: min(100%, 1200px);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
-  gap: clamp(20px, 3vw, 40px);
-  align-items: stretch;
-  min-height: calc(100dvh - 56px);
-  padding: clamp(16px, 3vw, 36px);
-}
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import { NAvatar, NButton } from 'naive-ui'
+import { api, type SiteStats } from '@/services/api'
+import { useDynamicStore } from '@/store'
 
-.xh-home {
-  min-width: 0;
-}
+const store = useDynamicStore()
+const stats = ref<SiteStats>({ articles: 0, totalUv: 0, todayUv: 0, pageViews: 0, comments: 0 })
+const recentPosts = computed(() => store.data.slice(0, 3))
+onMounted(async () => {
+  await store.initData()
+  try { stats.value = await api.stats() } catch { /* 统计不影响主页阅读 */ }
+})
+</script>
 
-.xh-info-container {
-  min-width: 0;
-}
-
-.xh-home-scroll {
-  max-height: calc(100dvh - 120px);
-}
-
-.xh-profile {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  text-align: center;
-  padding: 28px 20px 12px;
-  overflow: hidden;
-}
-
-.xh-profile__ornament {
-  position: absolute;
-  top: 18px;
-  width: min(75%, 360px);
-  height: 76px;
-  border-top: 1px solid rgba(181, 30, 30, 0.24);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.xh-profile__ornament::before,
-.xh-profile__ornament::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background: #b51e1e;
-  opacity: 0.6;
-  animation: profile-orbit 5s ease-in-out infinite;
-}
-
-.xh-profile__ornament::before {
-  top: -4px;
-  left: 12%;
-  width: 7px;
-  height: 7px;
-}
-
-.xh-profile__ornament::after {
-  top: 24px;
-  right: 8%;
-  width: 5px;
-  height: 5px;
-  animation-delay: -2.5s;
-}
-
-.xh-avatar-container {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.xh-avatar {
-  border: 3px solid #f0f0f0;
-  box-shadow: 0 8px 22px rgba(181, 30, 30, 0.16);
-}
-
-@keyframes profile-orbit {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.35;
-  }
-  50% {
-    transform: translateY(-9px);
-    opacity: 0.8;
-  }
-}
-
-.xh-name {
-  margin-top: 12px;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.xh-job {
-  text-align: center;
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 8px;
-}
-
-.xh-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-  justify-content: center;
-
-  .xh-tag {
-    padding: 4px 10px;
-    background: #f5f5f5;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: #555;
-  }
-
-  .xh-tag:hover {
-    color: #{$primary-color};
-  }
-}
-
-.xh-bio {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #444;
-  margin-bottom: 16px;
-  padding: 10px 0;
-}
-/* 外层固定高度容器 */
-.xh-social-container {
-  max-height: 360px;
-  width: 100%;
-}
-
-/* 网格布局容器 */
-.xh-social {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: minmax(100px, auto);
-  padding: 5px; /* 可选，增加内边距 */
-  padding-right: 8px;
-}
-
-/* 跨两行的卡片 */
-.double-row {
-  grid-row: span 2;
-}
-
-/* 卡片样式 */
-.card {
-  background: #fff;
-  border-radius: 4px;
-  padding: 12px;
-  min-width: 0;
-}
-
-/* 3D翻转效果 */
-.flip-enter-active {
-  animation: flip-in 0.5s ease-out;
-}
-
-.flip-leave-active {
-  animation: flip-out 0.5s ease-in;
-}
-
-@keyframes flip-in {
-  0% {
-    transform: rotateY(90deg);
-    opacity: 0;
-  }
-  100% {
-    transform: rotateY(0deg);
-    opacity: 1;
-  }
-}
-
-@keyframes flip-out {
-  0% {
-    transform: rotateY(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: rotateY(-90deg);
-    opacity: 0;
-  }
-}
-
-/* 基础样式保持不变，添加以下响应式样式 */
-
-/* 小屏幕 (小于768px) */
-@media (max-width: 768px) {
-  .xh-home-layout {
-    grid-template-columns: 1fr;
-    padding: 16px 0;
-  }
-
-  .xh-info-container {
-    width: 100%;
-  }
-
-  .xh-home-timeline {
-    display: none;
-  }
-
-  .xh-tags {
-    justify-content: center !important;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .xh-tag {
-    font-size: 12px !important;
-    padding: 4px 8px !important;
-  }
-
-  .xh-social {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-  }
-
-  .xh-avatar-container {
-    margin: 0 auto 20px !important;
-  }
-
-  .xh-name {
-    font-size: 24px !important;
-    text-align: center !important;
-  }
-
-  .xh-job {
-    font-size: 14px !important;
-    text-align: center !important;
-    margin-bottom: 15px !important;
-  }
-
-  .xh-bio {
-    font-size: 14px !important;
-    line-height: 1.6 !important;
-    margin-bottom: 15px !important;
-  }
-}
-
-/* 超小屏幕 (小于480px) */
-@media (max-width: 480px) {
-  .xh-tags {
-    justify-content: center !important;
-  }
-
-  .xh-social {
-    justify-content: center !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  .xh-name {
-    font-size: 22px !important;
-  }
-
-  .xh-job {
-    font-size: 13px !important;
-  }
-
-  .xh-bio {
-    font-size: 13px !important;
-  }
-
-  n-divider {
-    margin: 15px 0 !important;
-  }
-}
-
-/* 中等屏幕 (768px-992px) */
-@media (min-width: 768px) and (max-width: 992px) {
-  .xh-home-layout {
-    grid-template-columns: minmax(0, 1fr) 250px;
-  }
-}
-
-.xh-home-timeline {
-  align-self: center;
-  min-width: 0;
-  width: 100%;
-  max-height: calc(100dvh - 144px);
-  overflow-y: auto;
-  padding: 6px 0;
-}
-
+<style scoped>
+.home-page { width: min(100%, 1180px); margin: 0 auto; padding: clamp(30px, 6vw, 82px); }
+.eyebrow { color: #b51e1e; font-size: 0.73rem; font-weight: 750; letter-spacing: 0.18em; }
+.hero { display: grid; min-height: 58vh; grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr); align-items: center; gap: clamp(30px, 7vw, 90px); }
+.hero h1 { margin: 16px 0 22px; font-size: clamp(3rem, 7vw, 6.3rem); font-weight: 720; letter-spacing: -0.055em; line-height: 0.98; }
+.hero h1 em { color: #b51e1e; font-family: Georgia, 'Songti SC', serif; font-weight: 500; }
+.hero__copy > p { max-width: 620px; margin: 0; color: var(--text-soft); font-size: 1.05rem; line-height: 1.85; }
+.hero__actions { display: flex; gap: 12px; margin-top: 30px; }
+.hero__orbit { position: relative; display: grid; aspect-ratio: 1; place-items: center; }
+.hero__orbit::before { content: ''; position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #b51e1e; box-shadow: 86px 110px 0 rgba(181,30,30,.45), -115px -70px 0 rgba(181,30,30,.3), 128px -55px 0 rgba(181,30,30,.22); }
+.orbit { position: absolute; border: 1px solid rgba(181, 30, 30, 0.2); border-radius: 50%; animation: orbit-spin 8s linear infinite; }
+.orbit--outer { width: 92%; height: 66%; transform: rotate(-20deg); }
+.orbit--inner { width: 66%; height: 92%; animation-direction: reverse; animation-duration: 11s; }
+.orbit i { position: absolute; top: 50%; right: -5px; width: 10px; height: 10px; border-radius: 50%; background: #b51e1e; box-shadow: 0 0 18px rgba(181,30,30,.5); }
+.hero__avatar { position: relative; z-index: 1; padding: 10px; border: 1px solid var(--border-soft); border-radius: 50%; background: var(--surface); box-shadow: var(--shadow-soft); }
+.hero__signal { position: absolute; right: 7%; bottom: 16%; padding: 6px 9px; border: 1px solid var(--border-soft); border-radius: 3px; color: var(--text-soft); background: var(--surface); font-size: 0.72rem; }
+@keyframes orbit-spin { to { rotate: 360deg; } }
+.signal-strip { display: grid; grid-template-columns: repeat(4, 1fr); margin: 20px 0 90px; padding: 18px 0; border-block: 1px solid var(--border-soft); }
+.signal-strip div { display: flex; align-items: baseline; justify-content: center; gap: 8px; border-right: 1px solid var(--border-soft); }
+.signal-strip div:last-child { border: 0; }
+.signal-strip strong { font-size: 1.55rem; }
+.signal-strip span { color: var(--text-soft); font-size: 0.82rem; }
+.section-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 22px; }
+.section-heading h2, .cosmos-teaser h2 { margin: 7px 0 0; font-size: clamp(2rem, 4vw, 3.1rem); }
+.section-heading a { color: #b51e1e; text-decoration: none; }
+.latest__grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 14px; }
+.post-card { position: relative; display: flex; min-height: 210px; flex-direction: column; padding: 24px; overflow: hidden; border: 1px solid var(--border-soft); border-radius: 6px; color: inherit; background: color-mix(in srgb, var(--surface) 94%, transparent); text-decoration: none; transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; }
+.post-card--lead { grid-row: span 2; min-height: 434px; justify-content: end; border-left: 3px solid #b51e1e; }
+.post-card:hover { border-color: rgba(181,30,30,.38); box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+.post-card > span { font-size: 0.78rem; opacity: 0.7; }
+.post-card h3 { margin: 14px 0 9px; font-size: clamp(1.35rem, 3vw, 2rem); }
+.post-card p { display: -webkit-box; margin: 0; overflow: hidden; line-height: 1.7; opacity: 0.72; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.post-card i { position: absolute; top: 18px; right: 22px; font-family: Georgia, serif; font-size: 2.8rem; font-style: normal; opacity: 0.08; }
+.cosmos-teaser { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; margin-top: 90px; padding: clamp(28px, 5vw, 58px); border: 1px solid var(--border-soft); border-radius: 6px; color: inherit; background: color-mix(in srgb, var(--surface) 90%, transparent); text-decoration: none; }
+.cosmos-teaser p { max-width: 650px; color: var(--text-soft); line-height: 1.7; }
+.cosmos-teaser__arrow { display: grid; width: 56px; height: 56px; place-items: center; border: 1px solid #b51e1e; border-radius: 4px; color: #b51e1e; font-size: 1.45rem; transition: transform .16s ease; }
+.cosmos-teaser:hover .cosmos-teaser__arrow { transform: translate(5px, -5px); }
+@media (max-width: 760px) { .home-page { padding: 34px 8px; } .hero { min-height: auto; grid-template-columns: 1fr; } .hero__orbit { width: min(80vw, 350px); margin: 0 auto; } .signal-strip { grid-template-columns: repeat(2, 1fr); gap: 18px 0; margin-bottom: 62px; } .signal-strip div:nth-child(2) { border: 0; } .latest__grid { grid-template-columns: 1fr; } .post-card--lead { min-height: 280px; grid-row: auto; } }
 </style>
